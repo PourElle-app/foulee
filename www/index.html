@@ -61,6 +61,11 @@ p { margin: 0; }
 .hero > * { position: relative; z-index: 1; }
 .hero h1 span { color: #FF6A2E; }
 .hero p { max-width: 36ch; color: var(--hero-muted); }
+.hero-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lang { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(242, 245, 250, 0.12); border: 1px solid rgba(242, 245, 250, 0.18); } /* choix de la langue */
+.lang button { font: inherit; font-family: var(--display); font-weight: 800; font-size: 0.9rem; letter-spacing: 0.06em; min-width: 44px; min-height: 36px; border: 0; border-radius: 999px; background: transparent; color: var(--hero-muted); cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--hero-ink); color: var(--hero); }
+.lang button:focus-visible { outline: 3px solid var(--lane); outline-offset: 2px; }
 .tag { align-self: flex-start; font-family: var(--display); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: rgba(242, 245, 250, 0.12); border: 1px solid rgba(242, 245, 250, 0.18); }
 .card { background: var(--surface); border-radius: var(--r-xl); padding: 18px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
 .btn { font: inherit; font-weight: 700; min-height: 52px; padding: 12px 20px; border-radius: var(--r-md); border: 0; cursor: pointer; background: var(--accent); color: var(--accent-ink); display: inline-flex; align-items: center; justify-content: center; gap: 8px; position: relative; text-align: center;
@@ -142,8 +147,60 @@ details.why p { font-size: 0.9rem; color: var(--muted); }
 .hist input { width: 20px; height: 20px; accent-color: var(--lane); }
 .hist button { font: inherit; background: none; border: 0; color: var(--lane); font-weight: 700; cursor: pointer; min-height: 40px; padding: 0; font-size: 0.85rem; }
 .delta { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
-.delta th, .delta td { text-align: start; padding: 8px 6px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.delta { table-layout: fixed; } .delta th:first-child { width: 38%; }
+.delta th, .delta td { text-align: start; padding: 8px 4px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.delta th { font-size: 0.82rem; }
 .delta td.up { color: var(--good); font-weight: 700; } .delta td.down { color: var(--bad); font-weight: 700; }
+
+#liveCam { flex: 1 1 100%; min-height: 60px; font-size: 1.08rem; } /* l'assistant : le bouton principal, sur toute la largeur */
+.btn svg { flex: none; }
+/* Fiabilité, équilibre, note */
+.conf { display: inline-flex; align-items: center; gap: 4px; font-size: 0.74rem; color: var(--muted); font-weight: 600; }
+.conf i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+.conf.high i, .conf.med i:nth-child(-n+2), .conf.low i:first-child { background: var(--lane); }
+.balance { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: var(--line); margin-top: 4px; }
+.balance b { background: var(--lane); } .balance s { background: var(--accent); text-decoration: none; }
+.balance-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* Revoir ma vidéo */
+.replay-box { display: flex; flex-direction: column; gap: 10px; }
+.replay { position: relative; border-radius: var(--r-lg); overflow: hidden; background: #000; }
+.replay video { width: 100%; height: auto; display: block; border-radius: 0; background: #000; }
+.replay canvas { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 0; background: transparent; pointer-events: none; }
+.timeline { position: relative; height: 22px; border-radius: 999px; background: var(--surface-2); cursor: pointer; touch-action: none; }
+.timeline .ev { position: absolute; top: 5px; width: 4px; height: 12px; margin-left: -2px; border-radius: 2px; background: var(--accent); }
+.timeline .ev.far { background: var(--lane); top: 8px; height: 6px; }
+.timeline #rpHead { position: absolute; top: -3px; bottom: -3px; width: 3px; margin-left: -1.5px; border-radius: 2px; background: var(--ink); }
+.rp-ctl { justify-content: center; }
+/* Progression */
+.trend { display: grid; gap: 12px; }
+.trend figure { margin: 0; background: var(--surface-2); border-radius: var(--r-lg); padding: 10px 12px; }
+.trend figcaption { display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem; }
+.trend figcaption b { font-family: var(--display); font-size: 1.3rem; }
+.trend svg { width: 100%; height: 70px; display: block; overflow: visible; }
+.trend .ln { fill: none; stroke: var(--lane); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.trend .ar { fill: color-mix(in srgb, var(--lane) 14%, transparent); stroke: none; }
+.trend .pt { fill: none; stroke: var(--lane); stroke-width: 8; stroke-linecap: round; vector-effect: non-scaling-stroke; } /* un trait de longueur nulle aux bouts ronds = un point bien rond, même quand le dessin est étiré */
+.trend .zn { fill: color-mix(in srgb, var(--good) 14%, transparent); }
+/* Assistant de tournage : plein écran, toujours sombre */
+.cam { position: fixed; inset: 0; z-index: 60; background: #000; color: #F2F5FA; display: flex; flex-direction: column; }
+.cam video, .cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; border-radius: 0; background: transparent; }
+.cam video { background: #000; }
+.cam-top { position: relative; z-index: 2; padding: calc(12px + env(safe-area-inset-top, 0px)) 12px 0; }
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.checks li { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: rgba(11, 18, 32, 0.62); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.14); }
+.checks li i { width: 10px; height: 10px; border-radius: 50%; background: #FF7A7E; box-shadow: 0 0 0 3px rgba(255, 122, 126, 0.25); transition: background 0.2s; }
+.checks li.ok i { background: #45D18B; box-shadow: 0 0 0 3px rgba(69, 209, 139, 0.25); border-radius: 3px; }
+.level { position: absolute; z-index: 2; left: 50%; top: 50%; width: min(60vw, 320px); height: 0; transform: translate(-50%, -50%); pointer-events: none; }
+.level i { position: absolute; left: 0; right: 0; top: -1.5px; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.55); transition: transform 0.15s linear, background 0.2s; }
+.level.ok i { background: #45D18B; }
+.cam-msg { position: absolute; z-index: 2; left: 12px; right: 12px; bottom: calc(118px + env(safe-area-inset-bottom, 0px)); text-align: center; font-weight: 700; font-size: 1.05rem; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8); }
+.cam-bar { position: absolute; z-index: 2; left: 0; right: 0; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-evenly; align-items: center; }
+.cam-round { width: 54px; height: 54px; border-radius: 50%; border: 0; font: inherit; font-size: 1.4rem; color: #F2F5FA; background: rgba(11, 18, 32, 0.62); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); cursor: pointer; }
+.rec-btn { width: 78px; height: 78px; border-radius: 50%; border: 5px solid #F2F5FA; background: #E5383B; cursor: pointer; font-family: var(--display); font-weight: 800; font-size: 2rem; color: #fff; transition: border-radius 0.5s var(--spring), transform 0.5s var(--spring); }
+.rec-btn:active { transform: scale(0.92); }
+.rec-btn.on { border-radius: 24px; }
+.rec-btn[aria-disabled="true"] { opacity: 0.5; }
+.cam-round:focus-visible, .rec-btn:focus-visible { outline: 3px solid #7D9BFF; outline-offset: 3px; }
 /* Barre d'onglets flottante en verre */
 .tabbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(12px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))); width: min(560px, calc(100% - 24px)); z-index: 30;
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 6px; border-radius: 999px;
@@ -169,7 +226,7 @@ footer { font-size: 0.78rem; color: var(--muted); text-align: center; }
   <!-- =============== ONGLET 1 : ANALYSE =============== -->
   <div class="tab-panel" data-tab="analyse" id="tab-analyse" role="tabpanel" aria-labelledby="tb-analyse">
     <header class="hero">
-      <span class="tag">IA dans le téléphone · gratuit · privé</span>
+      <div class="hero-top"><span class="tag">IA dans le téléphone · gratuit · privé</span><div class="lang" role="group" aria-label="Langue"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="es" aria-pressed="false">ES</button></div></div>
       <h1>Foul<span>ée</span></h1>
       <p>Filmez 10 secondes de course de profil. L'IA mesure votre foulée, vous montre votre double en 3D et vous dit quoi corriger. La vidéo ne quitte jamais votre téléphone.</p>
     </header>
@@ -197,10 +254,14 @@ footer { font-size: 0.78rem; color: var(--muted); text-align: center; }
         </div>
       </div>
       <div class="row">
-        <label class="btn" id="pick" for="fileCam">Filmer maintenant<input id="fileCam" class="vh" type="file" accept="video/*" capture="environment"></label>
+        <button class="btn" id="liveCam" type="button"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 7h3l2-2.5h6L17 7h3v12H4z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.6" fill="none" stroke="currentColor" stroke-width="1.9"/></svg>Filmer avec l'assistant</button>
         <label class="btn secondary" id="pick2" for="file">Choisir une vidéo<input id="file" class="vh" type="file" accept="video/*"></label>
       </div>
-      <button class="btn ghost" id="demo" type="button">Voir un exemple (coureur simulé)</button>
+      <p class="small muted">L'assistant vérifie le cadrage en direct (corps entier, profil, distance, lumière, niveau) puis filme 12 secondes tout seul.</p>
+      <div class="row">
+        <label class="btn ghost" id="pick" for="fileCam">Appareil photo du téléphone<input id="fileCam" class="vh" type="file" accept="video/*" capture="environment"></label>
+        <button class="btn ghost" id="demo" type="button">Voir un exemple (coureur simulé)</button>
+      </div>
       <div id="work" hidden>
         <p id="workText" class="small muted" aria-live="polite">Préparation de l'IA…</p>
         <div class="progress" aria-hidden="true"><i id="bar"></i></div>
@@ -219,6 +280,19 @@ footer { font-size: 0.78rem; color: var(--muted); text-align: center; }
       </div>
       <canvas id="key" width="640" height="480" aria-label="Votre silhouette au moment où le pied touche le sol, avec les angles"></canvas>
       <p class="small muted">Silhouette au moment où le pied touche le sol. Trait orange : votre tibia ; pointillés : la verticale.</p>
+      <p class="note" id="tiltNote" hidden></p>
+      <div id="replayBox" class="replay-box" hidden>
+        <h3>Revoir ma vidéo</h3>
+        <div class="replay"><video id="rpVid" playsinline muted preload="auto"></video><canvas id="rpOv" aria-label="Votre vidéo avec le squelette"></canvas></div>
+        <div class="timeline" id="rpLine" aria-hidden="true"><i id="rpHead"></i></div>
+        <div class="row rp-ctl">
+          <button class="btn secondary round" id="rpPrev" type="button" aria-label="Image précédente">‹</button>
+          <button class="btn" id="rpPlay" type="button">Lecture</button>
+          <button class="btn secondary round" id="rpNext" type="button" aria-label="Image suivante">›</button>
+          <div class="seg" role="group" aria-label="Vitesse de lecture"><button type="button" data-rps="1" aria-pressed="false">×1</button><button type="button" data-rps="0.25" aria-pressed="true">×¼</button></div>
+        </div>
+        <p class="small muted">Repères sous la vidéo : orange = le pied le mieux vu touche le sol · bleu = l'autre pied.</p>
+      </div>
       <div class="row">
         <button class="btn" id="go3d" type="button">Voir mon double 3D</button>
         <button class="btn secondary" id="shareCard" type="button">Partager ma carte</button>
@@ -282,10 +356,19 @@ footer { font-size: 0.78rem; color: var(--muted); text-align: center; }
 
   <!-- =============== ONGLET 4 : PROGRÈS =============== -->
   <div class="tab-panel" data-tab="progres" id="tab-progres" role="tabpanel" aria-labelledby="tb-progres" hidden>
+    <section class="card" id="trendBox" hidden aria-labelledby="trendTitle">
+      <h2 id="trendTitle">Ma progression</h2>
+      <div id="trend"></div>
+    </section>
     <section class="card" aria-labelledby="histTitle">
       <h2 id="histTitle">Mes analyses</h2>
       <p class="small muted">Cochez deux analyses pour les comparer (avant / après).</p>
       <ul class="hist" id="hist"></ul>
+      <div class="row">
+        <button class="btn secondary" id="exportBtn" type="button">Sauvegarder mes analyses</button>
+        <label class="btn secondary" id="importLbl" for="importFile">Restaurer une sauvegarde<input id="importFile" class="vh" type="file" accept="application/json,.json"></label>
+      </div>
+      <p class="small muted">La sauvegarde est un petit fichier à garder (Drive, e-mail…) : utile si vous changez de téléphone.</p>
     </section>
     <section class="card" id="cmpBox" hidden aria-labelledby="cmpTitle">
       <h2 id="cmpTitle">Avant / après</h2>
@@ -305,6 +388,29 @@ footer { font-size: 0.78rem; color: var(--muted); text-align: center; }
   <button class="tab-btn" type="button" role="tab" id="tb-progres" data-tab-btn="progres" aria-controls="tab-progres" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V13M10 19V8M15 19v-4M20 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Progrès</span></button>
 </nav>
 <div class="toast" id="toast" role="status" hidden></div>
+
+<!-- =============== ASSISTANT DE TOURNAGE (plein écran) =============== -->
+<div class="cam" id="cam" hidden role="dialog" aria-modal="true" aria-labelledby="camTitle">
+  <video id="camVid" playsinline muted autoplay></video>
+  <canvas id="camOv" aria-hidden="true"></canvas>
+  <div class="cam-top">
+    <h2 id="camTitle" class="vh">Assistant de tournage</h2>
+    <ul class="checks" id="camChecks">
+      <li id="ck-body"><i></i>Corps entier</li>
+      <li id="ck-side"><i></i>De profil</li>
+      <li id="ck-size"><i></i>Distance</li>
+      <li id="ck-light"><i></i>Lumière</li>
+      <li id="ck-level"><i></i>Niveau</li>
+    </ul>
+  </div>
+  <div class="level" id="camLevel" aria-hidden="true"><i id="camLevelLine"></i></div>
+  <p class="cam-msg" id="camMsg" aria-live="polite">Démarrage de la caméra…</p>
+  <div class="cam-bar">
+    <button class="cam-round" id="camClose" type="button" aria-label="Fermer">✕</button>
+    <button class="rec-btn" id="camRec" type="button" aria-label="Enregistrer 12 secondes"><span id="camCount"></span></button>
+    <button class="cam-round" id="camFlip" type="button" aria-label="Changer de caméra">⟲</button>
+  </div>
+</div>
 
 <video id="vid" muted playsinline preload="auto" hidden></video>
 <canvas id="grab" hidden></canvas>
@@ -392,7 +498,7 @@ function prepare(frames, W, H) {                           // frames : [{t, lm:[
   const dir = median(dirVotes) >= 0 ? 1 : -1;              // +1 : court vers la droite de l'image, -1 : vers la gauche
   const legLen = median(ok.map(p => Math.hypot(p[S.hip].x - p[S.knee].x, p[S.hip].y - p[S.knee].y) + Math.hypot(p[S.knee].x - p[S.ank].x, p[S.knee].y - p[S.ank].y))); // longueur de jambe en pixels (règle de mesure)
   const shoulderGap = median(ok.map(p => Math.abs(p[LM.lSh].x - p[LM.rSh].x))) / legLen; // épaules très écartées = filmé de face, pas de profil
-  return { px, near, S, dir, legLen, shoulderGap, nearVis: vis(near), detected: ok.length / Math.max(1, frames.length) };
+  return { px, near, S, dir, legLen, shoulderGap, nearVis: vis(near), farVis: vis(near === 'L' ? 'R' : 'L'), detected: ok.length / Math.max(1, frames.length) };
 }
 
 // ---------- 2. Trouver les moments où le pied touche le sol ----------
@@ -407,7 +513,7 @@ function fillGaps(a) {                                     // bouche les trous (
   }
   return out;                                              // courbe complète
 }
-function contacts(series, times, minGap) {                 // series : point le plus bas du pied (y vers le bas) ; renvoie les indices des contacts
+function contactEvents(series, times, minGap) {            // series : point le plus bas du pied (y vers le bas) ; renvoie chaque appui : {c : pose du pied, off : décollage, pk : milieu}
   if (series.filter(Number.isFinite).length < 5) return []; // pas assez de données
   const y = smooth(fillGaps(series), 1);                   // courbe complète et lissée (le bruit de l'IA est atténué)
   const raw = y;                                           // la même courbe sert à dater le contact
@@ -421,21 +527,58 @@ function contacts(series, times, minGap) {                 // series : point le 
     if (peaks.length && times[i] - times[peaks[peaks.length - 1]] < minGap) { if (y[i] > y[peaks[peaks.length - 1]]) peaks[peaks.length - 1] = i; continue; } // trop près du précédent : on garde le plus bas
     peaks.push(i);                                         // nouveau point bas
   }
-  return peaks.map(pk => {                                 // le contact a lieu juste avant le point le plus bas : premier moment où le pied « arrive » au sol
-    let i = pk;                                            // on part du point bas
-    const tol = 0.08 * (hi - lo);                          // marge : 8 % de l'amplitude (le bruit de l'IA)
+  const tol = 0.08 * (hi - lo);                            // marge : 8 % de l'amplitude (le bruit de l'IA)
+  return peaks.map(pk => {                                 // pour chaque appui : quand le pied arrive au sol, et quand il le quitte
     const floor = Math.max(...raw.slice(Math.max(0, pk - 3), pk + 4).filter(Number.isFinite)); // niveau du sol à cet appui (courbe brute)
-    while (i > 0 && Number.isFinite(raw[i - 1]) && floor - raw[i - 1] <= tol && times[pk] - times[i - 1] < 0.4) i--; // on remonte tant que le pied est déjà au sol (un appui dure moins de 0,4 s)
     const level = floor - tol / 2;                         // le pied « touche » quand il passe ce niveau
-    if (i > 0 && Number.isFinite(raw[i - 1]) && raw[i] !== raw[i - 1] && raw[i - 1] < level && raw[i] >= level) return i - 1 + (level - raw[i - 1]) / (raw[i] - raw[i - 1]); // instant précis entre deux images (interpolation)
-    return i;                                              // sinon : l'image du contact initial
+    let i = pk;                                            // on part du point bas…
+    while (i > 0 && Number.isFinite(raw[i - 1]) && floor - raw[i - 1] <= tol && times[pk] - times[i - 1] < 0.4) i--; // …et on remonte le temps tant que le pied est déjà au sol (un appui dure moins de 0,4 s)
+    let c = i;                                             // image du contact initial
+    if (i > 0 && Number.isFinite(raw[i - 1]) && raw[i] !== raw[i - 1] && raw[i - 1] < level && raw[i] >= level) c = i - 1 + (level - raw[i - 1]) / (raw[i] - raw[i - 1]); // instant précis entre deux images (interpolation)
+    let j = pk;                                            // puis on avance dans le temps…
+    while (j < raw.length - 1 && Number.isFinite(raw[j + 1]) && floor - raw[j + 1] <= tol && times[j + 1] - times[pk] < 0.4) j++; // …tant que le pied reste au sol
+    let off = NaN;                                         // décollage (inconnu si la vidéo s'arrête avant)
+    if (j < raw.length - 1 && Number.isFinite(raw[j + 1])) off = raw[j] !== raw[j + 1] && raw[j] >= level && raw[j + 1] < level ? j + (raw[j] - level) / (raw[j] - raw[j + 1]) : j + 1; // instant précis où le pied quitte le sol
+    return { c, off, pk, from: i, to: j };                 // l'appui complet
   });
+}
+function contacts(series, times, minGap) { return contactEvents(series, times, minGap).map(e => e.c); } // seulement les instants de contact (ancienne forme)
+function theilSen(pts, minDx) {                            // pente d'un nuage de points, méthode de Theil-Sen (la valeur du milieu de toutes les pentes deux à deux)
+  const slopes = [];                                       // pentes de chaque paire de points
+  const step = Math.max(1, Math.floor(pts.length / 120));  // au plus ~120 points (sinon trop de paires)
+  const P = pts.filter((_, i) => i % step === 0);          // échantillon
+  for (let a = 0; a < P.length; a++) for (let b = a + 1; b < P.length; b++) { const dx = P[b][0] - P[a][0]; if (Math.abs(dx) >= minDx) slopes.push((P[b][1] - P[a][1]) / dx); } // pente de la paire (si assez écartée)
+  return slopes.length >= 20 ? median(slopes) : NaN;       // la pente du milieu : insensible aux points aberrants (jusqu'à ~29 %)
+}
+function rotateFrames(frames, W, H, deg) {                 // fait tourner toutes les images autour de leur centre (pour redresser un téléphone penché)
+  const a = deg / DEG, ca = Math.cos(a), sa = Math.sin(a), cx = W / 2, cy = H / 2; // angle et centre
+  return frames.map(f => ({ t: f.t, world: f.world, lm: f.lm ? f.lm.map(p => { const x = p.x * W - cx, y = p.y * H - cy; return { x: (cx + x * ca - y * sa) / W, y: (cy + x * sa + y * ca) / H, visibility: p.visibility }; }) : null })); // rotation de chaque point
 }
 
 // ---------- 3. Mesurer ----------
 function analyze(frames, W, H, opts) {                     // l'analyse complète
   opts = opts || {};                                       // options (taille de la personne en cm)
   if (opts.filter === true) { const P0 = prepare(frames, W, H); frames = filterFrames(frames, W, H, P0.legLen); } // filtre One-Euro : testé, il dégrade les angles au contact (trop de lissage d'un geste très rapide) ; il ne sert donc qu'à l'animation 3D
+  let tilt = 0;                                            // inclinaison du téléphone corrigée (en degrés)
+  if (!opts.noLevel) {                                     // ---- redressement automatique (« niveau à bulle » calculé) ----
+   const orig = frames;                                    // les images d'origine
+   for (let it = 0; it < 4; it++) {                        // on s'y reprend jusqu'à 4 fois : chaque redressement rend le suivant plus précis (l'appui paraît plus long une fois le sol à plat)
+    const P0 = prepare(frames, W, H), S0 = P0.S;           // lecture des images (déjà en partie redressées)
+    const low = p => p[S0.heel].y >= p[S0.toe].y ? p[S0.heel] : p[S0.toe]; // le point du pied le plus bas (talon ou orteils)
+    const ev = contactEvents(P0.px.map(p => p ? low(p).y : NaN), frames.map(f => f.t), 0.45); // les appuis du pied le mieux vu
+    const pts = [];                                        // points du pied pendant qu'il est au sol : ils dessinent la ligne du sol
+    for (const e of ev) for (let i = e.from; i <= e.to; i++) { const p = P0.px[i]; if (p) pts.push([low(p).x, low(p).y]); } // on les ramasse
+    const xs = pts.map(q => q[0]).sort((a, b) => a - b);   // positions horizontales
+    const spanX = xs.length > 5 ? xs[Math.floor(xs.length * 0.95)] - xs[Math.floor(xs.length * 0.05)] : 0; // étendue de la ligne du sol
+    const slope = spanX > 0.25 * P0.legLen ? theilSen(pts, 0.05 * P0.legLen) : NaN; // pente du sol (seulement si la ligne est assez longue)
+    const deg = Math.atan(slope) * DEG;                    // inclinaison du sol dans l'image
+    if (!Number.isFinite(deg) || Math.abs(deg) < 0.3) break; // le sol est à plat : terminé
+    tilt += deg;                                           // inclinaison totale trouvée
+    if (Math.abs(tilt) > 15) break;                        // au-delà de 15° : sans doute une erreur
+    frames = rotateFrames(orig, W, H, -tilt);              // on redresse les images d'origine de l'angle total
+   }
+   if (!(Math.abs(tilt) >= 0.7 && Math.abs(tilt) <= 15)) { tilt = 0; frames = orig; } // correction trop petite (inutile) ou trop grande (suspecte) : on garde les images d'origine
+  }
   const P = prepare(frames, W, H);                         // préparation
   const { px, S, dir, legLen } = P;                        // raccourcis
   const times = frames.map(f => f.t);                      // instants des images (en secondes)
@@ -448,8 +591,9 @@ function analyze(frames, W, H, opts) {                     // l'analyse complèt
   if (!(legLen > 20)) quality.push('small');               // personne trop petite dans l'image
   const heelY = side => px.map(p => p ? Math.max(p[SIDE[side].heel].y, p[SIDE[side].toe].y) : NaN); // point le plus bas du pied (talon ou orteils) dans le temps
   const tAt = c => times[Math.floor(c)] + (times[Math.ceil(c)] - times[Math.floor(c)]) * (c - Math.floor(c)); // instant (en s) d'un contact, même entre deux images
-  const nearC = contacts(heelY(P.near), times, 0.45);      // contacts du pied le mieux vu (une foulée = deux pas, environ 0,6-0,8 s)
-  const farC = contacts(heelY(P.near === 'L' ? 'R' : 'L'), times, 0.45); // contacts de l'autre pied
+  const nearE = contactEvents(heelY(P.near), times, 0.45); // appuis du pied le mieux vu (une foulée = deux pas, environ 0,6-0,8 s)
+  const farE = contactEvents(heelY(P.near === 'L' ? 'R' : 'L'), times, 0.45); // appuis de l'autre pied
+  const nearC = nearE.map(e => e.c), farC = farE.map(e => e.c); // instants de contact
   const all = [...nearC, ...farC].sort((a, b) => a - b);   // tous les pas, dans l'ordre
   const stepGaps = [];                                     // durées entre deux pas successifs
   for (let i = 1; i < all.length; i++) { const g = tAt(all[i]) - tAt(all[i - 1]); if (g > 0.18 && g < 0.6) stepGaps.push(g); } // on garde les écarts plausibles en course
@@ -489,12 +633,54 @@ function analyze(frames, W, H, opts) {                     // l'analyse complèt
     trunk: median(trunk), osc: median(osc), elbow: median(elbow), head: median(head),
   };
   if (opts.heightCm) m.oscCm = m.osc * 0.49 * opts.heightCm; // en cm si la taille est connue (une jambe ≈ 49 % de la taille)
+  // ---- temps de contact au sol et temps de vol ----
+  const gctOf = E => E.filter(e => Number.isFinite(e.off)).map(e => tAt(e.off) - tAt(e.c)).filter(g => g > 0.08 && g < 0.6); // durée de chaque appui (s)
+  const gctN = gctOf(nearE), gctF = gctOf(farE);           // pied proche, pied éloigné
+  const fps = 1 / median(times.slice(1).map((t, i) => t - times[i])); // images par seconde (réelles)
+  m.gct = median(gctN) * 1000;                             // temps de contact (ms) : mesuré sur le pied le mieux vu
+  m.flight = Number.isFinite(cadence) && Number.isFinite(m.gct) ? Math.max(0, 60000 / cadence - m.gct) : NaN; // temps de vol (ms) = durée d'un pas − contact
+  m.duty = Number.isFinite(m.flight) ? m.gct / (2 * 60000 / cadence) : NaN; // part de la foulée passée au sol
+  // ---- asymétrie gauche / droite (durée des pas) ----
+  const sA = [], sB = [], aS = [];                         // pas qui finissent sur le pied éloigné / sur le pied proche, et écart de chaque foulée
+  for (let i = 0; i < nearC.length - 1; i++) {             // entre deux contacts du pied proche…
+    const t0 = tAt(nearC[i]), t1 = tAt(nearC[i + 1]);      // …début et fin de la foulée
+    const f = farC.map(tAt).filter(t => t > t0 + 0.12 && t < t1 - 0.12); // …le contact de l'autre pied au milieu
+    if (f.length === 1) { sA.push(f[0] - t0); sB.push(t1 - f[0]); aS.push((t1 - f[0] - (f[0] - t0)) / ((t1 - t0) / 2) * 100); } // les deux pas de cette foulée, et leur écart en %
+  }
+  const stepFar = median(sA), stepNear = median(sB);       // durée du pas de chaque pied (pas « gauche » = celui qui se termine sur le pied gauche)
+  m.asym = aS.length >= 3 ? median(aS) : NaN;              // écart en % (positif : le pas du pied proche est plus long) — valeur du milieu des foulées : un appui mal vu ne fausse pas tout
+  const asymMad = aS.length >= 3 ? median(aS.map(a => Math.abs(a - m.asym))) : NaN; // dispersion de l'écart d'une foulée à l'autre
+  m.leftPct = Number.isFinite(m.asym) ? (P.near === 'L' ? stepNear : stepFar) / (stepNear + stepFar) * 100 : NaN; // part du pied gauche (50 % = parfait équilibre)
+  m.tilt = tilt;                                           // inclinaison du téléphone corrigée
+  // ---- garde-fous « est-ce bien de la course ? » (en plus de ceux du début) ----
+  const sweepOf = e => { const a0 = at(e.c, p => dir * (p[S.ank].x - (p[LM.lHip].x + p[LM.rHip].x) / 2) / legLen), a1 = at(e.off, p => dir * (p[S.ank].x - (p[LM.lHip].x + p[LM.rHip].x) / 2) / legLen); return a0 - a1; }; // de combien le pied recule sous le corps pendant l'appui (en longueurs de jambe)
+  const sweep = median(nearE.filter(e => Number.isFinite(e.off)).map(sweepOf)); // valeur du milieu
+  if (Number.isFinite(sweep) && sweep < 0.25 && !quality.includes('notRunning')) quality.push('notRunning'); // en course, le pied au sol file vers l'arrière (comme sur un tapis) : sinon, ce n'est pas de la course
+  if (gctN.length >= 3 && m.duty > 0.5 && !quality.includes('notRunning')) quality.push('notRunning'); // pied au sol plus de la moitié du temps : c'est de la marche
+  m.sweep = sweep;                                         // (gardé pour les vérifications)
   const spreadOf = a => { const v = a.filter(Number.isFinite).sort((x, y) => x - y); if (v.length < 3) return NaN; const q = f => v[Math.min(v.length - 1, Math.floor(f * (v.length - 1)))]; return (q(0.75) - q(0.25)) / 2; }; // dispersion d'un pas à l'autre (demi-écart interquartile)
   const spread = { shin: spreadOf(shin), knee: spreadOf(knee), foot: spreadOf(foot), osc: spreadOf(osc), cadence: strideGaps.length >= 3 ? 120 / median(strideGaps) * spreadOf(strideGaps) / median(strideGaps) : NaN }; // « ± » affiché à côté de chaque mesure
   const perStride = { shin, knee, foot };                  // valeurs pas par pas (pour le graphique de régularité)
   const keyFrame = nearC.length ? Math.round(nearC[Math.floor(nearC.length / 2)]) : px.findIndex(Boolean); // une image de contact au milieu de la vidéo, pour la photo de silhouette
   const clip = nearC.length >= 2 ? [Math.round(nearC[0]), Math.round(nearC[nearC.length - 1])] : [0, frames.length - 1]; // morceau de vidéo qui fait des foulées complètes (pour la boucle 3D)
-  return { metrics: m, spread, perStride, clip, quality, lift, swing, near: P.near, dir, legLen, contacts: nearC, otherContacts: farC, keyFrame, duration, detected: P.detected };
+  // ---- fiabilité de chaque mesure : élevée, moyenne ou faible ----
+  const base = Math.min(1, P.detected / 0.9) * Math.min(1, P.nearVis / 0.75); // l'IA voit-elle bien la personne ?
+  const nf = n => n >= 6 ? 1 : n >= 4 ? 0.85 : n >= 3 ? 0.65 : 0.3; // assez d'appuis ?
+  const sf = (sp, tol) => Number.isFinite(sp) ? 1 / (1 + (sp / tol) * (sp / tol)) : 0.8; // les pas se ressemblent-ils ?
+  const lvl = x => x >= 0.7 ? 'high' : x >= 0.45 ? 'med' : 'low'; // trois niveaux
+  const n = nearC.length;                                  // nombre d'appuis du pied proche
+  const conf = {
+    cadence: lvl(base * nf(n) * sf(spread.cadence, 4)),
+    shin: lvl(base * nf(n) * sf(spread.shin, 4)),
+    knee: lvl(base * nf(n) * sf(spread.knee, 5)),
+    foot: lvl(base * nf(n) * sf(spread.foot, 6)),
+    trunk: lvl(base * Math.min(1, P.detected)),
+    osc: lvl(base * nf(n - 1) * sf(spread.osc, 0.02)),
+    elbow: lvl(base * 0.9),
+    gct: lvl(base * nf(gctN.length) * Math.min(1, fps / 50) * sf(gctN.length >= 3 ? (median(gctN.map(g => Math.abs(g - median(gctN)))) * 1000) : NaN, 25)), // à 30 images/s, une image = 33 ms : fiabilité limitée
+    asym: lvl(base * nf(aS.length + 1) * Math.min(1, P.farVis / 0.6) * sf(asymMad, 5)), // l'autre pied est souvent caché : on tient compte de sa visibilité et de la régularité
+  };
+  return { metrics: m, spread, perStride, clip, quality, lift, swing, near: P.near, dir, legLen, contacts: nearC, otherContacts: farC, keyFrame, duration, detected: P.detected, conf, fps, tilt, gctAll: { near: gctN, far: gctF } };
 }
 
 // ---------- 4. Repères (vert / orange / rouge) ----------
@@ -506,6 +692,7 @@ const RULES = {
   trunk: v => v >= 3 && v <= 12 ? 'good' : v >= 0 && v <= 18 ? 'warn' : 'bad', // inclinaison du buste (°)
   osc: v => v <= 0.09 ? 'good' : v <= 0.13 ? 'warn' : 'bad',             // rebond (en longueurs de jambe)
   elbow: v => v >= 60 && v <= 110 ? 'good' : 'warn',                     // angle du coude (°)
+  asym: v => Math.abs(v) <= 4 ? 'good' : Math.abs(v) <= 8 ? 'warn' : 'bad', // écart gauche / droite (%) — repère seulement, hors score
 };
 function footType(v) {                                     // type d'attaque du pied
   if (!Number.isFinite(v)) return null;                    // inconnu
@@ -517,14 +704,14 @@ function grade(m) {                                        // couleur de chaque 
   const pts = { good: 100, warn: 60, bad: 25 };            // points par couleur
   const w = { cadence: 3, shin: 3, knee: 2, trunk: 2, osc: 2, elbow: 1 }; // poids : ce qui compte le plus pour les blessures
   let s = 0, n = 0;                                        // somme et total des poids
-  for (const k of Object.keys(g)) { s += pts[g[k]] * w[k]; n += w[k]; } // moyenne pondérée
+  for (const k of Object.keys(g)) { if (!w[k]) continue; s += pts[g[k]] * w[k]; n += w[k]; } // moyenne pondérée (l'asymétrie n'entre pas dans le score)
   return { colors: g, score: n ? Math.round(s / n) : null, foot: footType(m.foot) };
 }
 
 // ---------- 5. Coureur de démonstration (sert d'exemple et de test) ----------
 // Fabrique les 33 points d'un coureur vu de profil, sur tapis, avec des réglages connus.
 function synthRunner(o) {
-  o = Object.assign({ cadence: 158, seconds: 8, fps: 30, W: 720, H: 1280, L: 380, lean: 4, reach: 0.42, oscPx: 26, footAngle: 14, dir: 1 }, o || {}); // réglages par défaut
+  o = Object.assign({ cadence: 158, seconds: 8, fps: 30, W: 720, H: 1280, L: 380, lean: 4, reach: 0.42, oscPx: 26, footAngle: 14, dir: 1, tilt: 0, rOff: 0.5 }, o || {}); // réglages par défaut (tilt : téléphone penché, en degrés ; rOff : décalage de la jambe droite, 0,5 = pas égaux)
   const frames = [];                                       // images fabriquées
   const strideHz = o.cadence / 120;                        // foulées par seconde
   const hipX = o.W / 2, hipBase = o.H * 0.42;              // bassin au milieu de l'image
@@ -544,7 +731,7 @@ function synthRunner(o) {
     const phase0 = (t * strideHz) % 1;                     // où en est la foulée (0 = contact du pied gauche)
     const hip = { x: hipX, y: hipBase + (o.oscPx / 2) * Math.cos(4 * Math.PI * (phase0 - 0.17)) }; // le bassin monte et descend deux fois par foulée
     const legs = {};                                       // positions des deux jambes
-    for (const [side, off] of [['L', 0], ['R', 0.5]]) {    // jambe gauche, puis droite (décalée d'un demi-cycle)
+    for (const [side, off] of [['L', 0], ['R', 1 - o.rOff]]) { // jambe gauche, puis droite (décalée d'un demi-cycle si les pas sont égaux)
       const ph = (phase0 + off) % 1;                       // phase de cette jambe
       const front = hipX + o.dir * o.reach * o.L, back = hipX - o.dir * 0.45 * o.L; // pied devant (contact) et derrière (décollage)
       let ax, ay, fa;                                      // cheville et angle du pied
@@ -583,17 +770,558 @@ function synthRunner(o) {
       set(S.ear, { x: sh.x + o.dir * o.L * 0.03, y: sh.y - o.L * 0.22 }, v); // oreille
     }
     zSide = 0; set(LM.nose, { x: sh.x + o.dir * o.L * 0.1, y: sh.y - o.L * 0.24 }, 0.99); // le nez, devant les oreilles
+    if (o.tilt) { const a = o.tilt / DEG, cx = o.W / 2, cy = o.H / 2; for (const p of lm) { const x = p.x * o.W - cx, y = p.y * o.H - cy; p.x = (cx + x * Math.cos(a) - y * Math.sin(a)) / o.W; p.y = (cy + x * Math.sin(a) + y * Math.cos(a)) / o.H; } } // téléphone penché : toute l'image tourne
     frames.push({ t, lm, world });                         // l'image est prête
   }
   return { frames, W: o.W, H: o.H };                       // le coureur de démonstration
 }
 
-if (typeof module !== 'undefined') module.exports = { oneEuro, OE, analyze, grade, synthRunner, footType, median, LM, SIDE, angleAt }; // pour les tests automatiques
+if (typeof module !== 'undefined') module.exports = { oneEuro, OE, analyze, grade, synthRunner, footType, median, LM, SIDE, angleAt, contactEvents, theilSen, rotateFrames }; // pour les tests automatiques
 
 </script>
 <script src="vendor/capacitor.js"></script>
 <script src="mp/pose.js"></script>
 <script src="vendor/three.min.js"></script>
+<script>
+// ===================== LANGUES (français / anglais / espagnol) =====================
+// Métaphore : un interprète assis à côté de l'app. L'app parle français ; si la personne a choisi l'anglais,
+// l'interprète remplace chaque phrase française par sa traduction, juste avant qu'elle s'affiche.
+const LANG = (() => {                                      // la langue choisie
+  try { const s = localStorage.getItem('foulee.lang'); if (s === 'fr' || s === 'en' || s === 'es') return s; } catch (e) {} // choix déjà fait dans l'app
+  const l = (navigator.language || 'fr').toLowerCase();   // langue du téléphone (ex. « es-ES »)
+  return l.startsWith('fr') ? 'fr' : l.startsWith('es') ? 'es' : 'en'; // français, espagnol, sinon anglais (la plus comprise)
+})();
+const LOCALE = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES' }[LANG]; // format des dates
+const VOICE_LANG = { fr: 'fr-FR', en: 'en-US', es: 'es-ES' }[LANG]; // langue de la voix du coach
+const DEC = LANG === 'en' ? '.' : ',';                     // séparateur décimal (9,5 en français et en espagnol, 9.5 en anglais)
+const EN = {                                               // le dictionnaire : phrase française → phrase anglaise
+  // ---- textes fixes de la page ----
+  [`IA dans le téléphone · gratuit · privé`]: `On-phone AI · free · private`,
+  [`Filmez 10 secondes de course de profil. L'IA mesure votre foulée, vous montre votre double en 3D et vous dit quoi corriger. La vidéo ne quitte jamais votre téléphone.`]: `Film 10 seconds of running from the side. The AI measures your stride, shows you your 3D double and tells you what to fix. The video never leaves your phone.`,
+  [`Analyser ma course`]: `Analyse my running`,
+  [`Comment bien filmer (30 secondes à lire)`]: `How to film (30-second read)`,
+  [`Téléphone à l'horizontale, à hauteur de hanche`]: `Phone held landscape, at hip height`,
+  [`Exactement de profil, à 3–4 m`]: `Exactly side-on, 3–4 m away`,
+  [`Tout le corps visible, pieds compris`]: `Whole body visible, feet included`,
+  [`8 à 12 s de course régulière`]: `8 to 12 s of steady running`,
+  [`Votre taille (cm)`]: `Your height (cm)`,
+  [`Type de vidéo`]: `Video type`,
+  [`Normale`]: `Normal`,
+  [`60 images/s (plus précis)`]: `60 fps (more accurate)`,
+  [`Ralenti ×4`]: `Slow-mo ×4`,
+  [`Ralenti ×8`]: `Slow-mo ×8`,
+  [`Filmer maintenant`]: `Film now`,
+  [`Choisir une vidéo`]: `Choose a video`,
+  [`Voir un exemple (coureur simulé)`]: `See an example (simulated runner)`,
+  [`Préparation de l'IA…`]: `Preparing the AI…`,
+  [`Arrêter`]: `Stop`,
+  [`Votre foulée`]: `Your stride`,
+  [`Silhouette au moment où le pied touche le sol. Trait orange : votre tibia ; pointillés : la verticale.`]: `Your outline at the moment your foot lands. Orange line: your shin; dotted line: vertical.`,
+  [`Voir mon double 3D`]: `See my 3D double`,
+  [`Partager ma carte`]: `Share my card`,
+  [`Points d'attention`]: `Watch points`,
+  [`Vos exercices`]: `Your drills`,
+  [`Foulée n'est pas un outil médical : ces repères viennent de la recherche en biomécanique de la course, mais chaque coureur est différent. En cas de douleur qui dure, consultez un professionnel de santé (médecin du sport, kinésithérapeute). Changez une seule chose à la fois, progressivement.`]: `Foulée is not a medical device: these markers come from running biomechanics research, but every runner is different. If pain persists, see a health professional (sports doctor, physiotherapist). Change one thing at a time, gradually.`,
+  [`Ma carte Foulée`]: `My Foulée card`,
+  [`Mon double 3D`]: `My 3D double`,
+  [`Analysez d'abord une vidéo (ou l'exemple) : votre double rejouera votre foulée en 3D. Faites-le tourner avec le doigt.`]: `Analyse a video (or the example) first: your double will replay your stride in 3D. Spin it with your finger.`,
+  [`Vitesse réelle`]: `Real speed`,
+  [`Réaliste`]: `Realistic`,
+  [`Caricature`]: `Caricature`,
+  [`En mode caricature, les défauts sont exagérés et colorés pour sauter aux yeux : orange = à surveiller, rouge = à travailler.`]: `In caricature mode, faults are exaggerated and coloured so they jump out: orange = keep an eye on it, red = work on it.`,
+  [`Créer ma vidéo (6 s)`]: `Create my video (6 s)`,
+  [`Partager la vidéo`]: `Share the video`,
+  [`Coach cadence en direct`]: `Live cadence coach`,
+  [`Téléphone en poche ou au bras : il compte vos pas avec son capteur de mouvement et vous parle quand votre cadence sort de la cible. Aucune vidéo, aucun Internet.`]: `Phone in your pocket or on your arm: it counts your steps with its motion sensor and talks to you when your cadence leaves the target. No video, no Internet.`,
+  [`pas/min`]: `steps/min`,
+  [`Cible`]: `Target`,
+  [`Appuyez sur Démarrer, puis commencez à courir.`]: `Press Start, then start running.`,
+  [`Démarrer le coach`]: `Start the coach`,
+  [`Voix`]: `Voice`,
+  [`Bips`]: `Beeps`,
+  [`Métronome`]: `Metronome`,
+  [`Posez un pied à chaque « bip ». Pour corriger une cadence basse, montez de 5 % maximum.`]: `Land one foot on each beep. To fix a low cadence, go up by 5% at most.`,
+  [`Démarrer`]: `Start`,
+  [`Mes analyses`]: `My analyses`,
+  [`Cochez deux analyses pour les comparer (avant / après).`]: `Tick two analyses to compare them (before / after).`,
+  [`Vos analyses apparaîtront ici, pour suivre vos progrès (elles restent dans ce téléphone).`]: `Your analyses will appear here so you can track your progress (they stay on this phone).`,
+  [`Avant / après`]: `Before / after`,
+  [`Gris : la plus ancienne ·`]: `Grey: the older one ·`,
+  [`Bleu : la plus récente`]: `Blue: the newer one`,
+  [`· ▲ mieux, ▼ moins bien (par rapport à la zone idéale)`]: `· ▲ better, ▼ worse (compared with the ideal range)`,
+  [`Foulée · gratuit · aucune vidéo envoyée sur Internet · IA MediaPipe Pose (Google, licence Apache 2.0) et 3D Three.js (licence MIT), dans votre téléphone.`]: `Foulée · free · no video sent over the Internet · MediaPipe Pose AI (Google, Apache 2.0 licence) and Three.js 3D (MIT licence), on your phone.`,
+  [`Analyse`]: `Analysis`,
+  [`Double 3D`]: `3D double`,
+  [`Coach`]: `Coach`,
+  [`Progrès`]: `Progress`,
+  [`facultatif`]: `optional`,
+  [`Aperçu de l'analyse`]: `Analysis preview`,
+  [`Votre silhouette au moment où le pied touche le sol, avec les angles`]: `Your outline at the moment your foot lands, with the angles`,
+  [`Carte de votre analyse de foulée`]: `Card of your stride analysis`,
+  [`Votre double 3D en train de courir`]: `Your 3D double running`,
+  [`Vitesse`]: `Speed`,
+  [`Style`]: `Style`,
+  [`Annonces`]: `Announcements`,
+  [`Moins 2 pas par minute`]: `2 steps per minute slower`,
+  [`Plus 2 pas par minute`]: `2 steps per minute faster`,
+  [`Les deux silhouettes superposées`]: `Both outlines overlaid`,
+  [`Sections`]: `Sections`,
+  [`Langue`]: `Language`,
+  // ---- fiches des mesures ----
+  [`Cadence`]: `Cadence`,
+  [`Nombre de pas par minute. Une cadence un peu plus élevée raccourcit la foulée et réduit le choc sur les genoux et les hanches : augmenter sa cadence de 5 à 10 % diminue nettement la charge sur ces articulations (Heiderscheit et al., 2011). Elle augmente naturellement avec la vitesse.`]: `Steps per minute. A slightly higher cadence shortens your stride and reduces the impact on your knees and hips: raising cadence by 5 to 10% clearly lowers the load on these joints (Heiderscheit et al., 2011). It rises naturally with speed.`,
+  [`Pied devant le corps`]: `Foot ahead of the body`,
+  [`° tibia`]: `° shin`,
+  [`Angle du tibia quand le pied touche le sol. Proche de la verticale (0°) : le pied se pose sous le corps. Très positif : le pied atterrit loin devant, chaque pas freine et le choc remonte dans le genou (« overstriding »).`]: `Shin angle when the foot lands. Close to vertical (0°): the foot lands under the body. Very positive: the foot lands far ahead, each step brakes and the shock travels up into the knee (overstriding).`,
+  [`Genou à l'attaque`]: `Knee at landing`,
+  [`° de flexion`]: `° of bend`,
+  [`Un genou légèrement plié quand le pied touche le sol (environ 15 à 30°) joue le rôle d'amortisseur. Une jambe presque tendue rend l'atterrissage plus sec.`]: `A slightly bent knee when the foot lands (about 15 to 30°) acts as a shock absorber. An almost straight leg makes the landing harsher.`,
+  [`Inclinaison du buste`]: `Trunk lean`,
+  [`° vers l'avant`]: `° forward`,
+  [`Une légère inclinaison vers l'avant, depuis les chevilles, aide à avancer. Trop penché (cassé à la taille), le bas du dos travaille trop ; penché en arrière, on freine.`]: `A slight forward lean, from the ankles, helps you move forward. Leaning too far (bent at the waist) overworks the lower back; leaning back acts as a brake.`,
+  [`Rebond vertical`]: `Vertical bounce`,
+  [`De combien votre bassin monte et descend à chaque pas. Trop de rebond gaspille de l'énergie et augmente l'impact à chaque atterrissage : on veut avancer, pas sauter.`]: `How much your hips rise and fall with each step. Too much bounce wastes energy and increases the impact of each landing: the aim is to move forward, not to jump.`,
+  [`Angle du coude`]: `Elbow angle`,
+  [`Des coudes pliés autour de 90°, épaules relâchées, donnent un balancier efficace qui équilibre les jambes.`]: `Elbows bent at about 90°, shoulders relaxed, give an efficient arm swing that balances the legs.`,
+  [`% de la jambe`]: `% of leg length`,
+  [`Bon repère`]: `Good`,
+  [`À surveiller`]: `Watch`,
+  [`À travailler`]: `Work on it`,
+  [`Talon d'abord`]: `Heel first`,
+  [`Médio-pied`]: `Midfoot`,
+  [`Avant-pied`]: `Forefoot`,
+  [`L'IA n'a pas trouvé la personne sur une bonne partie de la vidéo : rapprochez-vous et filmez avec plus de lumière.`]: `The AI could not find the person in much of the video: move closer and film with more light.`,
+  [`Les jambes sont mal visibles : filmez tout le corps, pieds compris, sans obstacle devant.`]: `The legs are hard to see: film the whole body, feet included, with nothing in front.`,
+  [`La vidéo ne semble pas prise exactement de profil : placez-vous bien sur le côté du coureur.`]: `The video does not seem to be filmed exactly side-on: stand right beside the runner.`,
+  [`Vidéo trop courte : il faut au moins 3 secondes de course régulière.`]: `Video too short: at least 3 seconds of steady running are needed.`,
+  [`La personne est trop petite dans l'image : rapprochez-vous (3 à 4 mètres).`]: `The person is too small in the frame: move closer (3 to 4 metres).`,
+  [`Trop peu de pas détectés : filmez 8 à 12 secondes de course régulière.`]: `Too few steps detected: film 8 to 12 seconds of steady running.`,
+  [`Cette vidéo ne ressemble pas à de la course (pieds qui montent peu ou rythme inhabituel). Filmez une course régulière, pas de la marche.`]: `This video does not look like running (feet barely lifting or an unusual rhythm). Film steady running, not walking.`,
+  // ---- analyse et résultats ----
+  [`Tibia `]: `Shin `, [`Genou `]: `Knee `, [`Buste `]: `Trunk `,
+  [`Analyse de l'image `]: `Analysing frame `, [` sur `]: ` of `,
+  [`Exemple · coureur simulé`]: `Example · simulated runner`,
+  [`Votre vidéo`]: `Your video`,
+  [`Analyse impossible avec cette vidéo.`]: `This video cannot be analysed.`,
+  [`Résultats à prendre avec prudence.`]: `Treat these results with caution.`,
+  [`Réessayez avec une autre vidéo`]: `Try again with another video`,
+  [`Suivez les 4 conseils « Comment filmer » ci-dessus.`]: `Follow the 4 "How to film" tips above.`,
+  [`Belle foulée`]: `Great stride`,
+  [`Bonne base, quelques réglages`]: `Good base, a few tweaks`,
+  [`Des points à travailler`]: `Some things to work on`,
+  [`Score calculé sur `]: `Score based on `,
+  [` repères, pondérés selon leur lien avec les blessures. `]: ` markers, weighted by their link to injuries. `,
+  [` appuis analysés.`]: ` foot strikes analysed.`,
+  [` d'un pas à l'autre</span>`]: ` step to step</span>`,
+  [`<details class="why"><summary>Pourquoi c'est important</summary><p>`]: `<details class="why"><summary>Why it matters</summary><p>`,
+  [`<div class="tile wide"><div class="tile-top"><span class="tile-name">Attaque du pied</span><span class="chip info">Information</span></div>`]: `<div class="tile wide"><div class="tile-top"><span class="tile-name">Foot strike</span><span class="chip info">Info</span></div>`,
+  [`<details class="why"><summary>Pourquoi c'est important</summary><p>Talon, médio-pied ou avant-pied : aucune attaque n'est « la bonne » pour tout le monde, et les études ne montrent pas qu'une seule protège des blessures. L'attaque talon devient surtout un problème quand le pied atterrit aussi loin devant le corps. Changer d'attaque déplace la charge (par exemple vers les mollets) : à faire très progressivement.</p></details></div>`]: `<details class="why"><summary>Why it matters</summary><p>Heel, midfoot or forefoot: no foot strike is "the right one" for everyone, and studies do not show that any one of them prevents injuries. A heel strike mainly becomes a problem when the foot also lands far ahead of the body. Changing your foot strike shifts the load (for example to the calves): do it very gradually.</p></details></div>`,
+  [`Cadence : courez 5 minutes avec le métronome (onglet Coach) réglé à <b>`]: `Cadence: run 5 minutes with the metronome (Coach tab) set to <b>`,
+  [` pas/min</b> (+5 %), 2 à 3 fois par semaine, puis gardez ce rythme sur des sorties plus longues.`]: ` steps/min</b> (+5%), 2 to 3 times a week, then keep this rhythm on longer runs.`,
+  [`Pied sous le corps : pensez « poser le pied sous les hanches ». Éducatifs : montées de genoux (skipping) 3 × 20 m et quelques accélérations en légère montée.`]: `Foot under the body: think "land the foot under the hips". Drills: high knees (skipping) 3 × 20 m and a few strides on a gentle uphill.`,
+  [`<b>Genoux et tibias</b> : une cadence basse avec le pied loin devant le corps est associée, dans les études, à des forces de freinage et d'impact plus élevées (douleurs à l'avant du genou, périostite). C'est aussi le schéma le plus facile à améliorer.`]: `<b>Knees and shins</b>: in studies, a low cadence with the foot far ahead of the body is linked to higher braking and impact forces (pain at the front of the knee, shin splints). It is also the easiest pattern to improve.`,
+  [`<b>Genoux</b> : le pied atterrit loin devant le corps, ce qui augmente le freinage et le choc transmis au genou.`]: `<b>Knees</b>: the foot lands far ahead of the body, which increases braking and the shock sent to the knee.`,
+  [`<b>Atterrissage rigide</b> : jambe presque tendue au contact, l'amorti se fait moins bien au niveau du genou et de la hanche.`]: `<b>Stiff landing</b>: the leg is almost straight at contact, so the knee and hip absorb the shock less well.`,
+  [`Amorti : talons-fesses 3 × 20 m, et une foulée un peu plus courte pour poser le pied jambe légèrement pliée.`]: `Cushioning: butt kicks 3 × 20 m, and a slightly shorter stride so you land with the leg slightly bent.`,
+  [`<b>Buste trop droit ou en arrière</b> : cela freine la course.`]: `<b>Trunk too upright or leaning back</b>: this slows you down.`,
+  [`<b>Buste très penché</b> : le bas du dos et l'arrière des cuisses travaillent davantage.`]: `<b>Trunk leaning a lot</b>: the lower back and the back of the thighs work harder.`,
+  [`Posture : gainage (planche) 3 × 30 secondes ; en courant, « grandissez-vous » et penchez-vous légèrement depuis les chevilles, pas depuis la taille.`]: `Posture: plank 3 × 30 seconds; when running, "stand tall" and lean slightly from the ankles, not from the waist.`,
+  [`<b>Rebond important</b> : impacts plus forts à chaque atterrissage, mollets et tendons d'Achille plus sollicités.`]: `<b>Lots of bounce</b>: harder impacts on each landing, more strain on the calves and Achilles tendons.`,
+  [`Rebond : pensez « avancer, pas sauter ». Corde à sauter légère, 3 × 1 minute, petits sauts rapides.`]: `Bounce: think "move forward, don't jump". Light skipping rope, 3 × 1 minute, small quick hops.`,
+  [`Bras : coudes pliés autour de 90°, épaules basses et relâchées, les mains frôlent les hanches.`]: `Arms: elbows bent at about 90°, shoulders low and relaxed, hands brushing the hips.`,
+  [`Tête : regard droit devant, à 15-20 m, menton rentré ; la tête reste au-dessus des épaules.`]: `Head: look straight ahead, 15–20 m away, chin tucked; keep the head above the shoulders.`,
+  [`<b>Mollets et tendon d'Achille</b> : l'attaque avant-pied les sollicite davantage ; si c'est récent pour vous, augmentez les distances progressivement.`]: `<b>Calves and Achilles tendon</b>: a forefoot strike loads them more; if it is new for you, increase distances gradually.`,
+  [`Continuez ainsi ! Refaites une analyse dans 4 à 6 semaines, ou en fin de sortie quand la fatigue change la foulée.`]: `Keep it up! Do another analysis in 4 to 6 weeks, or at the end of a run when fatigue changes your stride.`,
+  // ---- carte à partager ----
+  [`Tibia`]: `Shin`, [`au contact`]: `at landing`, [`Genou`]: `Knee`, [`de flexion`]: `bend`, [`Buste`]: `Trunk`, [`vers l'avant`]: `forward`,
+  [`Analysé par l'IA, dans mon téléphone · Foulée, gratuit`]: `Analysed by AI, on my phone · Foulée, free`,
+  [`Ma foulée`]: `My stride`,
+  [`Image prête. Si rien ne s'est téléchargé, faites un appui long sur l'image pour l'enregistrer.`]: `Image ready. If nothing downloaded, long-press the image to save it.`,
+  [`Carte prête à partager.`]: `Card ready to share.`,
+  [`Partage annulé. Vous pouvez aussi faire un appui long sur l'image pour l'enregistrer.`]: `Sharing cancelled. You can also long-press the image to save it.`,
+  // ---- double 3D ----
+  [`Analysez d'abord une vidéo (ou l'exemple) dans l'onglet Analyse : votre double rejouera votre foulée en 3D.`]: `First analyse a video (or the example) in the Analysis tab: your double will replay your stride in 3D.`,
+  [`La 3D n'a pas pu démarrer sur cet appareil (carte graphique indisponible).`]: `3D could not start on this device (graphics unavailable).`,
+  [`Votre foulée rejouée en 3D. Faites tourner le double avec le doigt.`]: `Your stride replayed in 3D. Spin the double with your finger.`,
+  [` pas/min`]: ` steps/min`,
+  [`Score `]: `Score `,
+  [`Ce téléphone ne sait pas enregistrer de vidéo depuis l'app.`]: `This phone cannot record video from the app.`,
+  [` pas/min · `]: ` steps/min · `,
+  [`Caricature · orange : à surveiller · rouge : à travailler`]: `Caricature · orange: watch · red: work on it`,
+  [`Refaire ma vidéo`]: `Make my video again`,
+  [`Vidéo prête (`]: `Video ready (`, [` Ko).`]: ` KB).`,
+  [`Enregistrement… 6 secondes.`]: `Recording… 6 seconds.`,
+  [`Mon double Foulée`]: `My Foulée double`,
+  [`Partage annulé.`]: `Sharing cancelled.`,
+  // ---- coach ----
+  [`Le capteur de mouvement ne répond pas sur cet appareil.`]: `The motion sensor is not responding on this device.`,
+  [`En attente de vos pas… (téléphone en poche ou au bras)`]: `Waiting for your steps… (phone in pocket or on your arm)`,
+  [`Petits pas plus rapides : visez `]: `Quicker, shorter steps: aim for `,
+  [`Un peu plus calme : visez `]: `A little calmer: aim for `,
+  [`Parfait, gardez ce rythme.`]: `Perfect, keep this rhythm.`,
+  [`Cadence `]: `Cadence `,
+  [`. Accélérez le rythme des pas.`]: `. Quicken your step rate.`,
+  [`. Ralentissez un peu le rythme.`]: `. Slow your step rate a little.`,
+  [`. Parfait.`]: `. Perfect.`,
+  [`Coach arrêté.`]: `Coach stopped.`,
+  [`Autorisez l'accès au capteur de mouvement pour utiliser le coach.`]: `Allow access to the motion sensor to use the coach.`,
+  [`Arrêter le coach`]: `Stop the coach`,
+  [`C'est parti : courez, je compte vos pas.`]: `Here we go: run, I'm counting your steps.`,
+  [`Coach démarré. Cible : `]: `Coach started. Target: `,
+  [` pas par minute.`]: ` steps per minute.`,
+  // ---- progrès ----
+  [` pas/min · tibia `]: ` steps/min · shin `,
+  [`">Comparer</label><button type="button" data-del="`]: `">Compare</label><button type="button" data-del="`,
+  [`">Supprimer</button></div></div><span class="hs">`]: `">Delete</button></div></div><span class="hs">`,
+  [`<li><span class="small muted">Vos analyses apparaîtront ici, pour suivre vos progrès (elles restent dans ce téléphone).</span></li>`]: `<li><span class="small muted">Your analyses will appear here so you can track your progress (they stay on this phone).</span></li>`,
+  [`Supprimer cette analyse ?`]: `Delete this analysis?`,
+  [`Silhouette indisponible pour une analyse de l'ancienne version.`]: `Outline not available for an analysis from the old version.`,
+  [`<tr><th>Repère</th><th>Avant</th><th>Après</th><th>Écart</th></tr>`]: `<tr><th>Marker</th><th>Before</th><th>After</th><th>Change</th></tr>`,
+  [`Score`]: `Score`,
+  // ---- erreurs ----
+  [`Cette vidéo ne peut pas être lue par le téléphone. Essayez une vidéo filmée avec l'appareil photo (format MP4 ou MOV).`]: `The phone cannot play this video. Try a video filmed with the camera (MP4 or MOV format).`,
+  [`L'IA n'a pas pu démarrer sur cet appareil.`]: `The AI could not start on this device.`,
+  [`L'analyse a échoué. Réessayez avec une vidéo plus courte (10 secondes).`]: `The analysis failed. Try again with a shorter video (10 seconds).`,
+  // ---- v3 : assistant de tournage, revoir la vidéo, nouvelles mesures, progrès ----
+  [`Équilibre gauche / droite`]: `Left / right balance`,
+  [`Téléphone penché de `]: `Phone tilted by `,
+  [`° : les angles ont été redressés automatiquement (ligne du sol détectée).`]: `°: the angles were straightened automatically (ground line detected).`,
+  [`<b>Asymétrie</b> : vos pas ne durent pas autant à gauche et à droite (écart de `]: `<b>Asymmetry</b>: your left and right steps do not last the same time (difference of `,
+  [` %). Si cela se confirme sur plusieurs vidéos, surtout avec une douleur, parlez-en à un kinésithérapeute.`]: ` %). If this is confirmed across several videos, especially with pain, talk to a physiotherapist.`,
+  [`Pourquoi c'est important`]: `Why it matters`,
+  [`Contact au sol`]: `Ground contact`,
+  [`Information`]: `Info`,
+  [`Temps de vol : `]: `Flight time: `,
+  [`Temps pendant lequel le pied reste au sol à chaque pas. Il diminue quand on court plus vite : environ 250 à 300 ms en footing, moins de 200 ms chez les coureurs rapides. Le temps de vol, c'est le moment où les deux pieds sont en l'air. À 30 images par seconde, une image dure 33 ms : filmez à 60 images/s pour plus de précision.`]: `How long the foot stays on the ground at each step. It gets shorter as you run faster: about 250 to 300 ms when jogging, under 200 ms for fast runners. Flight time is when both feet are in the air. At 30 frames per second one frame lasts 33 ms: film at 60 fps for more precision.`,
+  [`% d'écart entre les pas`]: `% difference between steps`,
+  [`Gauche`]: `Left`,
+  [`Droite`]: `Right`,
+  [`Compare la durée des pas qui se terminent sur le pied gauche et sur le pied droit. Un petit écart (moins de 4 %) est normal. Un écart plus grand et durable peut venir d'une gêne, d'une ancienne blessure ou d'une différence de force entre les jambes. Le pied le plus loin de la caméra est parfois caché : confirmez sur plusieurs vidéos avant de conclure.`]: `Compares how long the steps ending on the left foot and on the right foot last. A small difference (under 4%) is normal. A larger, lasting difference can come from discomfort, an old injury or a strength difference between the legs. The foot furthest from the camera is sometimes hidden: confirm across several videos before drawing conclusions.`,
+  [`Lecture`]: `Play`,
+  [`Pause`]: `Pause`,
+  [`Démarrage de la caméra…`]: `Starting the camera…`,
+  [`Autorisez l'accès à la caméra pour utiliser l'assistant (réglages du téléphone).`]: `Allow camera access to use the assistant (phone settings).`,
+  [`Caméra indisponible ici. Utilisez « Choisir une vidéo » ou l'appareil photo du téléphone.`]: `Camera unavailable here. Use "Choose a video" or the phone camera app.`,
+  [`Chargement de l'IA…`]: `Loading the AI…`,
+  [`L'IA n'a pas pu démarrer : vous pouvez quand même filmer.`]: `The AI could not start: you can still film.`,
+  [`Je ne vois personne : placez le coureur dans l'image.`]: `I can't see anyone: put the runner in the frame.`,
+  [`Tout le corps doit être visible, pieds compris.`]: `The whole body must be visible, feet included.`,
+  [`Rapprochez-vous un peu.`]: `Move a little closer.`,
+  [`Reculez un peu.`]: `Step back a little.`,
+  [`Placez-vous exactement sur le côté du coureur.`]: `Stand exactly beside the runner.`,
+  [`Il faut plus de lumière.`]: `More light is needed.`,
+  [`Redressez le téléphone (gardez la ligne verte à plat).`]: `Straighten the phone (keep the green line level).`,
+  [`Parfait ! Appuyez sur le bouton rouge.`]: `Perfect! Press the red button.`,
+  [`Le coureur démarre… `]: `Runner, get going… `,
+  [`Enregistrement… courez naturellement.`]: `Recording… run naturally.`,
+  [`Aucune analyse à sauvegarder pour l'instant.`]: `No analyses to back up yet.`,
+  [`Sauvegarde Foulée`]: `Foulée backup`,
+  [`Sauvegarde prête.`]: `Backup ready.`,
+  [` analyse(s) restaurée(s).`]: ` analysis(es) restored.`,
+  [`Ce fichier n'est pas une sauvegarde Foulée.`]: `This file is not a Foulée backup.`,
+  [`Fiabilité élevée`]: `High reliability`,
+  [`Fiabilité moyenne`]: `Medium reliability`,
+  [`Fiabilité faible`]: `Low reliability`,
+  [`Filmer avec l'assistant`]: `Film with the assistant`,
+  [`L'assistant vérifie le cadrage en direct (corps entier, profil, distance, lumière, niveau) puis filme 12 secondes tout seul.`]: `The assistant checks your framing live (whole body, side view, distance, light, level) then films 12 seconds by itself.`,
+  [`Appareil photo du téléphone`]: `Phone camera app`,
+  [`Revoir ma vidéo`]: `Watch my video again`,
+  [`Repères sous la vidéo : orange = le pied le mieux vu touche le sol · bleu = l'autre pied.`]: `Marks under the video: orange = the best-seen foot lands · blue = the other foot.`,
+  [`Ma progression`]: `My progress`,
+  [`Sauvegarder mes analyses`]: `Back up my analyses`,
+  [`Restaurer une sauvegarde`]: `Restore a backup`,
+  [`La sauvegarde est un petit fichier à garder (Drive, e-mail…) : utile si vous changez de téléphone.`]: `The backup is a small file to keep (Drive, email…): useful if you change phones.`,
+  [`Assistant de tournage`]: `Filming assistant`,
+  [`Corps entier`]: `Whole body`,
+  [`De profil`]: `Side view`,
+  [`Distance`]: `Distance`,
+  [`Lumière`]: `Light`,
+  [`Niveau`]: `Level`,
+  [`Votre vidéo avec le squelette`]: `Your video with the skeleton`,
+  [`Image précédente`]: `Previous frame`,
+  [`Image suivante`]: `Next frame`,
+  [`Vitesse de lecture`]: `Playback speed`,
+  [`Fermer`]: `Close`,
+  [`Enregistrer 12 secondes`]: `Record 12 seconds`,
+  [`Changer de caméra`]: `Switch camera`,
+  [`Tournez le téléphone à l'horizontale.`]: `Turn the phone sideways (landscape).`,
+};
+const ES = {                                               // le dictionnaire espagnol : phrase française → phrase espagnole
+  [`IA dans le téléphone · gratuit · privé`]: `IA en el móvil · gratis · privada`,
+  [`Filmez 10 secondes de course de profil. L'IA mesure votre foulée, vous montre votre double en 3D et vous dit quoi corriger. La vidéo ne quitte jamais votre téléphone.`]: `Graba 10 segundos corriendo de perfil. La IA mide tu zancada, te muestra tu doble en 3D y te dice qué corregir. El vídeo nunca sale de tu móvil.`,
+  [`Analyser ma course`]: `Analizar mi carrera`,
+  [`Comment bien filmer (30 secondes à lire)`]: `Cómo grabar bien (30 segundos de lectura)`,
+  [`Téléphone à l'horizontale, à hauteur de hanche`]: `Móvil en horizontal, a la altura de la cadera`,
+  [`Exactement de profil, à 3–4 m`]: `Exactamente de perfil, a 3–4 m`,
+  [`Tout le corps visible, pieds compris`]: `Todo el cuerpo visible, pies incluidos`,
+  [`8 à 12 s de course régulière`]: `8 a 12 s de carrera regular`,
+  [`Votre taille (cm)`]: `Tu estatura (cm)`,
+  [`Type de vidéo`]: `Tipo de vídeo`,
+  [`Normale`]: `Normal`,
+  [`60 images/s (plus précis)`]: `60 fps (más preciso)`,
+  [`Ralenti ×4`]: `Cámara lenta ×4`,
+  [`Ralenti ×8`]: `Cámara lenta ×8`,
+  [`Filmer maintenant`]: `Grabar ahora`,
+  [`Choisir une vidéo`]: `Elegir un vídeo`,
+  [`Voir un exemple (coureur simulé)`]: `Ver un ejemplo (corredor simulado)`,
+  [`Préparation de l'IA…`]: `Preparando la IA…`,
+  [`Arrêter`]: `Detener`,
+  [`Votre foulée`]: `Tu zancada`,
+  [`Silhouette au moment où le pied touche le sol. Trait orange : votre tibia ; pointillés : la verticale.`]: `Tu silueta en el momento en que el pie toca el suelo. Línea naranja: tu tibia; línea de puntos: la vertical.`,
+  [`Voir mon double 3D`]: `Ver mi doble 3D`,
+  [`Partager ma carte`]: `Compartir mi tarjeta`,
+  [`Points d'attention`]: `Puntos de atención`,
+  [`Vos exercices`]: `Tus ejercicios`,
+  [`Foulée n'est pas un outil médical : ces repères viennent de la recherche en biomécanique de la course, mais chaque coureur est différent. En cas de douleur qui dure, consultez un professionnel de santé (médecin du sport, kinésithérapeute). Changez une seule chose à la fois, progressivement.`]: `Foulée no es una herramienta médica: estas referencias vienen de la investigación en biomecánica de la carrera, pero cada corredor es diferente. Si un dolor persiste, consulta a un profesional de la salud (médico deportivo, fisioterapeuta). Cambia una sola cosa a la vez, de forma progresiva.`,
+  [`Ma carte Foulée`]: `Mi tarjeta Foulée`,
+  [`Mon double 3D`]: `Mi doble 3D`,
+  [`Analysez d'abord une vidéo (ou l'exemple) : votre double rejouera votre foulée en 3D. Faites-le tourner avec le doigt.`]: `Analiza primero un vídeo (o el ejemplo): tu doble repetirá tu zancada en 3D. Hazlo girar con el dedo.`,
+  [`Vitesse réelle`]: `Velocidad real`,
+  [`Réaliste`]: `Realista`,
+  [`Caricature`]: `Caricatura`,
+  [`En mode caricature, les défauts sont exagérés et colorés pour sauter aux yeux : orange = à surveiller, rouge = à travailler.`]: `En modo caricatura, los defectos se exageran y se colorean para que salten a la vista: naranja = vigilar, rojo = trabajar.`,
+  [`Créer ma vidéo (6 s)`]: `Crear mi vídeo (6 s)`,
+  [`Partager la vidéo`]: `Compartir el vídeo`,
+  [`Coach cadence en direct`]: `Coach de cadencia en directo`,
+  [`Téléphone en poche ou au bras : il compte vos pas avec son capteur de mouvement et vous parle quand votre cadence sort de la cible. Aucune vidéo, aucun Internet.`]: `Móvil en el bolsillo o en el brazo: cuenta tus pasos con su sensor de movimiento y te habla cuando tu cadencia sale del objetivo. Sin vídeo, sin Internet.`,
+  [`pas/min`]: `pasos/min`,
+  [`Cible`]: `Objetivo`,
+  [`Appuyez sur Démarrer, puis commencez à courir.`]: `Pulsa Empezar y luego empieza a correr.`,
+  [`Démarrer le coach`]: `Iniciar el coach`,
+  [`Voix`]: `Voz`,
+  [`Bips`]: `Pitidos`,
+  [`Métronome`]: `Metrónomo`,
+  [`Posez un pied à chaque « bip ». Pour corriger une cadence basse, montez de 5 % maximum.`]: `Apoya un pie en cada «pitido». Para corregir una cadencia baja, sube un 5 % como máximo.`,
+  [`Démarrer`]: `Empezar`,
+  [`Mes analyses`]: `Mis análisis`,
+  [`Cochez deux analyses pour les comparer (avant / après).`]: `Marca dos análisis para compararlos (antes / después).`,
+  [`Vos analyses apparaîtront ici, pour suivre vos progrès (elles restent dans ce téléphone).`]: `Tus análisis aparecerán aquí para seguir tu progreso (se quedan en este móvil).`,
+  [`Avant / après`]: `Antes / después`,
+  [`Gris : la plus ancienne ·`]: `Gris: el más antiguo ·`,
+  [`Bleu : la plus récente`]: `Azul: el más reciente`,
+  [`· ▲ mieux, ▼ moins bien (par rapport à la zone idéale)`]: `· ▲ mejor, ▼ peor (respecto a la zona ideal)`,
+  [`Foulée · gratuit · aucune vidéo envoyée sur Internet · IA MediaPipe Pose (Google, licence Apache 2.0) et 3D Three.js (licence MIT), dans votre téléphone.`]: `Foulée · gratis · ningún vídeo enviado a Internet · IA MediaPipe Pose (Google, licencia Apache 2.0) y 3D Three.js (licencia MIT), en tu móvil.`,
+  [`Analyse`]: `Análisis`,
+  [`Double 3D`]: `Doble 3D`,
+  [`Coach`]: `Coach`,
+  [`Progrès`]: `Progreso`,
+  [`facultatif`]: `opcional`,
+  [`Aperçu de l'analyse`]: `Vista previa del análisis`,
+  [`Votre silhouette au moment où le pied touche le sol, avec les angles`]: `Tu silueta en el momento en que el pie toca el suelo, con los ángulos`,
+  [`Carte de votre analyse de foulée`]: `Tarjeta de tu análisis de zancada`,
+  [`Votre double 3D en train de courir`]: `Tu doble 3D corriendo`,
+  [`Vitesse`]: `Velocidad`,
+  [`Style`]: `Estilo`,
+  [`Annonces`]: `Avisos`,
+  [`Moins 2 pas par minute`]: `2 pasos por minuto menos`,
+  [`Plus 2 pas par minute`]: `2 pasos por minuto más`,
+  [`Les deux silhouettes superposées`]: `Las dos siluetas superpuestas`,
+  [`Sections`]: `Secciones`,
+  [`Langue`]: `Idioma`,
+  [`Cadence`]: `Cadencia`,
+  [`Nombre de pas par minute. Une cadence un peu plus élevée raccourcit la foulée et réduit le choc sur les genoux et les hanches : augmenter sa cadence de 5 à 10 % diminue nettement la charge sur ces articulations (Heiderscheit et al., 2011). Elle augmente naturellement avec la vitesse.`]: `Número de pasos por minuto. Una cadencia algo más alta acorta la zancada y reduce el impacto en rodillas y caderas: aumentar la cadencia un 5 a 10 % reduce claramente la carga sobre estas articulaciones (Heiderscheit et al., 2011). Aumenta de forma natural con la velocidad.`,
+  [`Pied devant le corps`]: `Pie por delante del cuerpo`,
+  [`° tibia`]: `° tibia`,
+  [`Angle du tibia quand le pied touche le sol. Proche de la verticale (0°) : le pied se pose sous le corps. Très positif : le pied atterrit loin devant, chaque pas freine et le choc remonte dans le genou (« overstriding »).`]: `Ángulo de la tibia cuando el pie toca el suelo. Cerca de la vertical (0°): el pie se apoya bajo el cuerpo. Muy positivo: el pie aterriza muy por delante, cada paso frena y el impacto sube hasta la rodilla («overstriding»).`,
+  [`Genou à l'attaque`]: `Rodilla al apoyo`,
+  [`° de flexion`]: `° de flexión`,
+  [`Un genou légèrement plié quand le pied touche le sol (environ 15 à 30°) joue le rôle d'amortisseur. Une jambe presque tendue rend l'atterrissage plus sec.`]: `Una rodilla ligeramente flexionada cuando el pie toca el suelo (unos 15 a 30°) actúa como amortiguador. Una pierna casi recta hace el aterrizaje más seco.`,
+  [`Inclinaison du buste`]: `Inclinación del tronco`,
+  [`° vers l'avant`]: `° hacia delante`,
+  [`Une légère inclinaison vers l'avant, depuis les chevilles, aide à avancer. Trop penché (cassé à la taille), le bas du dos travaille trop ; penché en arrière, on freine.`]: `Una ligera inclinación hacia delante, desde los tobillos, ayuda a avanzar. Demasiado inclinado (doblado por la cintura), la zona lumbar trabaja de más; inclinado hacia atrás, frenas.`,
+  [`Rebond vertical`]: `Rebote vertical`,
+  [`De combien votre bassin monte et descend à chaque pas. Trop de rebond gaspille de l'énergie et augmente l'impact à chaque atterrissage : on veut avancer, pas sauter.`]: `Cuánto sube y baja tu pelvis en cada paso. Demasiado rebote malgasta energía y aumenta el impacto en cada aterrizaje: se trata de avanzar, no de saltar.`,
+  [`Angle du coude`]: `Ángulo del codo`,
+  [`Des coudes pliés autour de 90°, épaules relâchées, donnent un balancier efficace qui équilibre les jambes.`]: `Codos flexionados a unos 90°, hombros relajados, dan un braceo eficaz que equilibra las piernas.`,
+  [`% de la jambe`]: `% de la pierna`,
+  [`Bon repère`]: `Buen valor`,
+  [`À surveiller`]: `A vigilar`,
+  [`À travailler`]: `A trabajar`,
+  [`Talon d'abord`]: `Talón primero`,
+  [`Médio-pied`]: `Mediopié`,
+  [`Avant-pied`]: `Antepié`,
+  [`L'IA n'a pas trouvé la personne sur une bonne partie de la vidéo : rapprochez-vous et filmez avec plus de lumière.`]: `La IA no ha encontrado a la persona en buena parte del vídeo: acércate y graba con más luz.`,
+  [`Les jambes sont mal visibles : filmez tout le corps, pieds compris, sans obstacle devant.`]: `Las piernas se ven mal: graba todo el cuerpo, pies incluidos, sin obstáculos delante.`,
+  [`La vidéo ne semble pas prise exactement de profil : placez-vous bien sur le côté du coureur.`]: `El vídeo no parece grabado exactamente de perfil: colócate bien al lado del corredor.`,
+  [`Vidéo trop courte : il faut au moins 3 secondes de course régulière.`]: `Vídeo demasiado corto: hacen falta al menos 3 segundos de carrera regular.`,
+  [`La personne est trop petite dans l'image : rapprochez-vous (3 à 4 mètres).`]: `La persona se ve demasiado pequeña: acércate (3 a 4 metros).`,
+  [`Trop peu de pas détectés : filmez 8 à 12 secondes de course régulière.`]: `Se han detectado muy pocos pasos: graba de 8 a 12 segundos de carrera regular.`,
+  [`Cette vidéo ne ressemble pas à de la course (pieds qui montent peu ou rythme inhabituel). Filmez une course régulière, pas de la marche.`]: `Este vídeo no parece de carrera (pies que suben poco o ritmo inusual). Graba una carrera regular, no caminando.`,
+  [`Tibia `]: `Tibia `,
+  [`Genou `]: `Rodilla `,
+  [`Buste `]: `Tronco `,
+  [`Analyse de l'image `]: `Analizando la imagen `,
+  [` sur `]: ` de `,
+  [`Exemple · coureur simulé`]: `Ejemplo · corredor simulado`,
+  [`Votre vidéo`]: `Tu vídeo`,
+  [`Analyse impossible avec cette vidéo.`]: `No se puede analizar este vídeo.`,
+  [`Résultats à prendre avec prudence.`]: `Toma estos resultados con prudencia.`,
+  [`Réessayez avec une autre vidéo`]: `Prueba con otro vídeo`,
+  [`Suivez les 4 conseils « Comment filmer » ci-dessus.`]: `Sigue los 4 consejos «Cómo grabar bien» de arriba.`,
+  [`Belle foulée`]: `Buena zancada`,
+  [`Bonne base, quelques réglages`]: `Buena base, algunos ajustes`,
+  [`Des points à travailler`]: `Puntos a trabajar`,
+  [`Score calculé sur `]: `Puntuación calculada sobre `,
+  [` repères, pondérés selon leur lien avec les blessures. `]: ` referencias, ponderadas según su relación con las lesiones. `,
+  [` appuis analysés.`]: ` apoyos analizados.`,
+  [` d'un pas à l'autre</span>`]: ` de un paso a otro</span>`,
+  [`<details class="why"><summary>Pourquoi c'est important</summary><p>`]: `<details class="why"><summary>Por qué es importante</summary><p>`,
+  [`<div class="tile wide"><div class="tile-top"><span class="tile-name">Attaque du pied</span><span class="chip info">Information</span></div>`]: `<div class="tile wide"><div class="tile-top"><span class="tile-name">Apoyo del pie</span><span class="chip info">Información</span></div>`,
+  [`<details class="why"><summary>Pourquoi c'est important</summary><p>Talon, médio-pied ou avant-pied : aucune attaque n'est « la bonne » pour tout le monde, et les études ne montrent pas qu'une seule protège des blessures. L'attaque talon devient surtout un problème quand le pied atterrit aussi loin devant le corps. Changer d'attaque déplace la charge (par exemple vers les mollets) : à faire très progressivement.</p></details></div>`]: `<details class="why"><summary>Por qué es importante</summary><p>Talón, mediopié o antepié: ningún apoyo es «el bueno» para todo el mundo, y los estudios no muestran que uno solo proteja de las lesiones. El apoyo de talón se vuelve sobre todo un problema cuando el pie además aterriza muy por delante del cuerpo. Cambiar de apoyo desplaza la carga (por ejemplo hacia los gemelos): hazlo muy poco a poco.</p></details></div>`,
+  [`Cadence : courez 5 minutes avec le métronome (onglet Coach) réglé à <b>`]: `Cadencia: corre 5 minutos con el metrónomo (pestaña Coach) a <b>`,
+  [` pas/min</b> (+5 %), 2 à 3 fois par semaine, puis gardez ce rythme sur des sorties plus longues.`]: ` pasos/min</b> (+5 %), 2 o 3 veces por semana, y luego mantén ese ritmo en salidas más largas.`,
+  [`Pied sous le corps : pensez « poser le pied sous les hanches ». Éducatifs : montées de genoux (skipping) 3 × 20 m et quelques accélérations en légère montée.`]: `Pie bajo el cuerpo: piensa «apoyar el pie bajo las caderas». Ejercicios: skipping (rodillas arriba) 3 × 20 m y algunas progresiones en ligera subida.`,
+  [`<b>Genoux et tibias</b> : une cadence basse avec le pied loin devant le corps est associée, dans les études, à des forces de freinage et d'impact plus élevées (douleurs à l'avant du genou, périostite). C'est aussi le schéma le plus facile à améliorer.`]: `<b>Rodillas y tibias</b>: en los estudios, una cadencia baja con el pie muy por delante del cuerpo se asocia a fuerzas de frenado e impacto más altas (dolor en la parte delantera de la rodilla, periostitis). También es el patrón más fácil de mejorar.`,
+  [`<b>Genoux</b> : le pied atterrit loin devant le corps, ce qui augmente le freinage et le choc transmis au genou.`]: `<b>Rodillas</b>: el pie aterriza muy por delante del cuerpo, lo que aumenta el frenado y el impacto que llega a la rodilla.`,
+  [`<b>Atterrissage rigide</b> : jambe presque tendue au contact, l'amorti se fait moins bien au niveau du genou et de la hanche.`]: `<b>Aterrizaje rígido</b>: pierna casi recta al contacto, la rodilla y la cadera amortiguan peor.`,
+  [`Amorti : talons-fesses 3 × 20 m, et une foulée un peu plus courte pour poser le pied jambe légèrement pliée.`]: `Amortiguación: talones al glúteo 3 × 20 m, y una zancada algo más corta para apoyar con la pierna ligeramente flexionada.`,
+  [`<b>Buste trop droit ou en arrière</b> : cela freine la course.`]: `<b>Tronco demasiado recto o hacia atrás</b>: eso frena la carrera.`,
+  [`<b>Buste très penché</b> : le bas du dos et l'arrière des cuisses travaillent davantage.`]: `<b>Tronco muy inclinado</b>: la zona lumbar y la parte posterior de los muslos trabajan más.`,
+  [`Posture : gainage (planche) 3 × 30 secondes ; en courant, « grandissez-vous » et penchez-vous légèrement depuis les chevilles, pas depuis la taille.`]: `Postura: plancha 3 × 30 segundos; al correr, «crece» e inclínate ligeramente desde los tobillos, no desde la cintura.`,
+  [`<b>Rebond important</b> : impacts plus forts à chaque atterrissage, mollets et tendons d'Achille plus sollicités.`]: `<b>Mucho rebote</b>: impactos más fuertes en cada aterrizaje, más carga en gemelos y tendones de Aquiles.`,
+  [`Rebond : pensez « avancer, pas sauter ». Corde à sauter légère, 3 × 1 minute, petits sauts rapides.`]: `Rebote: piensa «avanzar, no saltar». Comba ligera, 3 × 1 minuto, saltitos rápidos.`,
+  [`Bras : coudes pliés autour de 90°, épaules basses et relâchées, les mains frôlent les hanches.`]: `Brazos: codos flexionados a unos 90°, hombros bajos y relajados, las manos rozan las caderas.`,
+  [`Tête : regard droit devant, à 15-20 m, menton rentré ; la tête reste au-dessus des épaules.`]: `Cabeza: mirada al frente, a 15–20 m, barbilla recogida; la cabeza se mantiene sobre los hombros.`,
+  [`<b>Mollets et tendon d'Achille</b> : l'attaque avant-pied les sollicite davantage ; si c'est récent pour vous, augmentez les distances progressivement.`]: `<b>Gemelos y tendón de Aquiles</b>: el apoyo de antepié los carga más; si es nuevo para ti, aumenta las distancias poco a poco.`,
+  [`Continuez ainsi ! Refaites une analyse dans 4 à 6 semaines, ou en fin de sortie quand la fatigue change la foulée.`]: `¡Sigue así! Repite un análisis dentro de 4 a 6 semanas, o al final de una salida, cuando el cansancio cambia la zancada.`,
+  [`Tibia`]: `Tibia`,
+  [`au contact`]: `al apoyo`,
+  [`Genou`]: `Rodilla`,
+  [`de flexion`]: `de flexión`,
+  [`Buste`]: `Tronco`,
+  [`vers l'avant`]: `hacia delante`,
+  [`Analysé par l'IA, dans mon téléphone · Foulée, gratuit`]: `Analizado por la IA, en mi móvil · Foulée, gratis`,
+  [`Ma foulée`]: `Mi zancada`,
+  [`Image prête. Si rien ne s'est téléchargé, faites un appui long sur l'image pour l'enregistrer.`]: `Imagen lista. Si no se ha descargado nada, mantén pulsada la imagen para guardarla.`,
+  [`Carte prête à partager.`]: `Tarjeta lista para compartir.`,
+  [`Partage annulé. Vous pouvez aussi faire un appui long sur l'image pour l'enregistrer.`]: `Compartir cancelado. También puedes mantener pulsada la imagen para guardarla.`,
+  [`Analysez d'abord une vidéo (ou l'exemple) dans l'onglet Analyse : votre double rejouera votre foulée en 3D.`]: `Primero analiza un vídeo (o el ejemplo) en la pestaña Análisis: tu doble repetirá tu zancada en 3D.`,
+  [`La 3D n'a pas pu démarrer sur cet appareil (carte graphique indisponible).`]: `El 3D no ha podido iniciarse en este dispositivo (gráficos no disponibles).`,
+  [`Votre foulée rejouée en 3D. Faites tourner le double avec le doigt.`]: `Tu zancada repetida en 3D. Haz girar al doble con el dedo.`,
+  [` pas/min`]: ` pasos/min`,
+  [`Score `]: `Puntuación `,
+  [`Ce téléphone ne sait pas enregistrer de vidéo depuis l'app.`]: `Este móvil no puede grabar vídeo desde la app.`,
+  [` pas/min · `]: ` pasos/min · `,
+  [`Caricature · orange : à surveiller · rouge : à travailler`]: `Caricatura · naranja: vigilar · rojo: trabajar`,
+  [`Refaire ma vidéo`]: `Rehacer mi vídeo`,
+  [`Vidéo prête (`]: `Vídeo listo (`,
+  [` Ko).`]: ` KB).`,
+  [`Enregistrement… 6 secondes.`]: `Grabando… 6 segundos.`,
+  [`Mon double Foulée`]: `Mi doble Foulée`,
+  [`Partage annulé.`]: `Compartir cancelado.`,
+  [`Le capteur de mouvement ne répond pas sur cet appareil.`]: `El sensor de movimiento no responde en este dispositivo.`,
+  [`En attente de vos pas… (téléphone en poche ou au bras)`]: `Esperando tus pasos… (móvil en el bolsillo o en el brazo)`,
+  [`Petits pas plus rapides : visez `]: `Pasos más cortos y rápidos: apunta a `,
+  [`Un peu plus calme : visez `]: `Un poco más tranquilo: apunta a `,
+  [`Parfait, gardez ce rythme.`]: `Perfecto, mantén este ritmo.`,
+  [`Cadence `]: `Cadencia `,
+  [`. Accélérez le rythme des pas.`]: `. Acelera el ritmo de los pasos.`,
+  [`. Ralentissez un peu le rythme.`]: `. Baja un poco el ritmo.`,
+  [`. Parfait.`]: `. Perfecto.`,
+  [`Coach arrêté.`]: `Coach detenido.`,
+  [`Autorisez l'accès au capteur de mouvement pour utiliser le coach.`]: `Permite el acceso al sensor de movimiento para usar el coach.`,
+  [`Arrêter le coach`]: `Detener el coach`,
+  [`C'est parti : courez, je compte vos pas.`]: `¡Vamos! Corre, yo cuento tus pasos.`,
+  [`Coach démarré. Cible : `]: `Coach iniciado. Objetivo: `,
+  [` pas par minute.`]: ` pasos por minuto.`,
+  [` pas/min · tibia `]: ` pasos/min · tibia `,
+  [`">Comparer</label><button type="button" data-del="`]: `">Comparar</label><button type="button" data-del="`,
+  [`">Supprimer</button></div></div><span class="hs">`]: `">Borrar</button></div></div><span class="hs">`,
+  [`<li><span class="small muted">Vos analyses apparaîtront ici, pour suivre vos progrès (elles restent dans ce téléphone).</span></li>`]: `<li><span class="small muted">Tus análisis aparecerán aquí para seguir tu progreso (se quedan en este móvil).</span></li>`,
+  [`Supprimer cette analyse ?`]: `¿Borrar este análisis?`,
+  [`Silhouette indisponible pour une analyse de l'ancienne version.`]: `Silueta no disponible para un análisis de la versión anterior.`,
+  [`<tr><th>Repère</th><th>Avant</th><th>Après</th><th>Écart</th></tr>`]: `<tr><th>Referencia</th><th>Antes</th><th>Después</th><th>Cambio</th></tr>`,
+  [`Score`]: `Puntuación`,
+  [`Cette vidéo ne peut pas être lue par le téléphone. Essayez une vidéo filmée avec l'appareil photo (format MP4 ou MOV).`]: `El móvil no puede leer este vídeo. Prueba con un vídeo grabado con la cámara (formato MP4 o MOV).`,
+  [`L'IA n'a pas pu démarrer sur cet appareil.`]: `La IA no ha podido iniciarse en este dispositivo.`,
+  [`L'analyse a échoué. Réessayez avec une vidéo plus courte (10 secondes).`]: `El análisis ha fallado. Prueba con un vídeo más corto (10 segundos).`,
+  // ---- v3 : assistant de tournage, revoir la vidéo, nouvelles mesures, progrès ----
+  [`Équilibre gauche / droite`]: `Equilibrio izquierda / derecha`,
+  [`Téléphone penché de `]: `Móvil inclinado `,
+  [`° : les angles ont été redressés automatiquement (ligne du sol détectée).`]: `°: los ángulos se han enderezado automáticamente (línea del suelo detectada).`,
+  [`<b>Asymétrie</b> : vos pas ne durent pas autant à gauche et à droite (écart de `]: `<b>Asimetría</b>: tus pasos no duran lo mismo a la izquierda y a la derecha (diferencia del `,
+  [` %). Si cela se confirme sur plusieurs vidéos, surtout avec une douleur, parlez-en à un kinésithérapeute.`]: ` %). Si se confirma en varios vídeos, sobre todo con dolor, consúltalo con un fisioterapeuta.`,
+  [`Pourquoi c'est important`]: `Por qué es importante`,
+  [`Contact au sol`]: `Contacto con el suelo`,
+  [`Information`]: `Información`,
+  [`Temps de vol : `]: `Tiempo de vuelo: `,
+  [`Temps pendant lequel le pied reste au sol à chaque pas. Il diminue quand on court plus vite : environ 250 à 300 ms en footing, moins de 200 ms chez les coureurs rapides. Le temps de vol, c'est le moment où les deux pieds sont en l'air. À 30 images par seconde, une image dure 33 ms : filmez à 60 images/s pour plus de précision.`]: `Tiempo que el pie permanece en el suelo en cada paso. Disminuye cuanto más rápido corres: unos 250 a 300 ms trotando, menos de 200 ms en corredores rápidos. El tiempo de vuelo es el momento en que los dos pies están en el aire. A 30 imágenes por segundo, una imagen dura 33 ms: graba a 60 fps para más precisión.`,
+  [`% d'écart entre les pas`]: `% de diferencia entre pasos`,
+  [`Gauche`]: `Izquierda`,
+  [`Droite`]: `Derecha`,
+  [`Compare la durée des pas qui se terminent sur le pied gauche et sur le pied droit. Un petit écart (moins de 4 %) est normal. Un écart plus grand et durable peut venir d'une gêne, d'une ancienne blessure ou d'une différence de force entre les jambes. Le pied le plus loin de la caméra est parfois caché : confirmez sur plusieurs vidéos avant de conclure.`]: `Compara la duración de los pasos que terminan en el pie izquierdo y en el pie derecho. Una pequeña diferencia (menos del 4 %) es normal. Una diferencia mayor y duradera puede deberse a una molestia, una lesión antigua o una diferencia de fuerza entre las piernas. El pie más alejado de la cámara a veces queda oculto: confírmalo en varios vídeos antes de sacar conclusiones.`,
+  [`Lecture`]: `Reproducir`,
+  [`Pause`]: `Pausa`,
+  [`Démarrage de la caméra…`]: `Iniciando la cámara…`,
+  [`Autorisez l'accès à la caméra pour utiliser l'assistant (réglages du téléphone).`]: `Permite el acceso a la cámara para usar el asistente (ajustes del móvil).`,
+  [`Caméra indisponible ici. Utilisez « Choisir une vidéo » ou l'appareil photo du téléphone.`]: `Cámara no disponible aquí. Usa «Elegir un vídeo» o la cámara del móvil.`,
+  [`Chargement de l'IA…`]: `Cargando la IA…`,
+  [`L'IA n'a pas pu démarrer : vous pouvez quand même filmer.`]: `La IA no ha podido iniciarse: aun así puedes grabar.`,
+  [`Je ne vois personne : placez le coureur dans l'image.`]: `No veo a nadie: coloca al corredor en la imagen.`,
+  [`Tout le corps doit être visible, pieds compris.`]: `Todo el cuerpo debe verse, pies incluidos.`,
+  [`Rapprochez-vous un peu.`]: `Acércate un poco.`,
+  [`Reculez un peu.`]: `Aléjate un poco.`,
+  [`Placez-vous exactement sur le côté du coureur.`]: `Colócate exactamente al lado del corredor.`,
+  [`Il faut plus de lumière.`]: `Hace falta más luz.`,
+  [`Redressez le téléphone (gardez la ligne verte à plat).`]: `Endereza el móvil (mantén la línea verde horizontal).`,
+  [`Parfait ! Appuyez sur le bouton rouge.`]: `¡Perfecto! Pulsa el botón rojo.`,
+  [`Le coureur démarre… `]: `El corredor arranca… `,
+  [`Enregistrement… courez naturellement.`]: `Grabando… corre con naturalidad.`,
+  [`Aucune analyse à sauvegarder pour l'instant.`]: `Todavía no hay análisis que guardar.`,
+  [`Sauvegarde Foulée`]: `Copia de Foulée`,
+  [`Sauvegarde prête.`]: `Copia lista.`,
+  [` analyse(s) restaurée(s).`]: ` análisis restaurado(s).`,
+  [`Ce fichier n'est pas une sauvegarde Foulée.`]: `Este archivo no es una copia de Foulée.`,
+  [`Fiabilité élevée`]: `Fiabilidad alta`,
+  [`Fiabilité moyenne`]: `Fiabilidad media`,
+  [`Fiabilité faible`]: `Fiabilidad baja`,
+  [`Filmer avec l'assistant`]: `Grabar con el asistente`,
+  [`L'assistant vérifie le cadrage en direct (corps entier, profil, distance, lumière, niveau) puis filme 12 secondes tout seul.`]: `El asistente comprueba el encuadre en directo (cuerpo entero, perfil, distancia, luz, nivel) y luego graba 12 segundos solo.`,
+  [`Appareil photo du téléphone`]: `Cámara del móvil`,
+  [`Revoir ma vidéo`]: `Volver a ver mi vídeo`,
+  [`Repères sous la vidéo : orange = le pied le mieux vu touche le sol · bleu = l'autre pied.`]: `Marcas bajo el vídeo: naranja = el pie mejor visto toca el suelo · azul = el otro pie.`,
+  [`Ma progression`]: `Mi progreso`,
+  [`Sauvegarder mes analyses`]: `Guardar mis análisis`,
+  [`Restaurer une sauvegarde`]: `Restaurar una copia`,
+  [`La sauvegarde est un petit fichier à garder (Drive, e-mail…) : utile si vous changez de téléphone.`]: `La copia es un pequeño archivo que debes conservar (Drive, correo…): útil si cambias de móvil.`,
+  [`Assistant de tournage`]: `Asistente de grabación`,
+  [`Corps entier`]: `Cuerpo entero`,
+  [`De profil`]: `De perfil`,
+  [`Distance`]: `Distancia`,
+  [`Lumière`]: `Luz`,
+  [`Niveau`]: `Nivel`,
+  [`Votre vidéo avec le squelette`]: `Tu vídeo con el esqueleto`,
+  [`Image précédente`]: `Imagen anterior`,
+  [`Image suivante`]: `Imagen siguiente`,
+  [`Vitesse de lecture`]: `Velocidad de reproducción`,
+  [`Fermer`]: `Cerrar`,
+  [`Enregistrer 12 secondes`]: `Grabar 12 segundos`,
+  [`Changer de caméra`]: `Cambiar de cámara`,
+  [`Tournez le téléphone à l'horizontale.`]: `Gira el móvil en horizontal.`,
+};
+const DICT = LANG === 'en' ? EN : LANG === 'es' ? ES : null; // le dictionnaire à utiliser (aucun en français)
+function T(s) { return DICT && Object.prototype.hasOwnProperty.call(DICT, s) ? DICT[s] : s; } // traduit une phrase (ou la laisse telle quelle)
+function translatePage() {                                 // traduit tous les textes fixes de la page (au démarrage)
+  document.documentElement.lang = LANG;                    // la page annonce sa langue (lecteurs d'écran, voix)
+  document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG))); // bouton FR / EN actif
+  if (!DICT) return;                                       // en français : rien à faire
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); // on parcourt chaque morceau de texte
+  const nodes = []; let n; while ((n = walker.nextNode())) nodes.push(n); // on les ramasse d'abord (on ne modifie pas pendant le parcours)
+  for (const node of nodes) {                              // chaque morceau
+    if (node.parentElement && node.parentElement.closest('script,style')) continue; // pas le code
+    const raw = node.nodeValue, t = raw.trim();            // le texte, sans espaces autour
+    if (t && Object.prototype.hasOwnProperty.call(DICT, t)) node.nodeValue = raw.replace(t, DICT[t]); // traduit en gardant les espaces
+  }
+  document.querySelectorAll('[aria-label],[placeholder],[alt]').forEach(e => { for (const a of ['aria-label', 'placeholder', 'alt']) { const v = e.getAttribute(a); if (v && Object.prototype.hasOwnProperty.call(DICT, v)) e.setAttribute(a, DICT[v]); } }); // textes cachés (lecteurs d'écran, champs)
+}
+translatePage();                                           // on traduit tout de suite
+document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => { // boutons FR / EN
+  if (b.dataset.lang === LANG) return;                     // déjà dans cette langue
+  try { localStorage.setItem('foulee.lang', b.dataset.lang); } catch (e) {} // on retient le choix
+  location.reload();                                       // on relance l'app dans la nouvelle langue
+}));
+
+</script>
 <script>
 // ===================== INTERFACE DE FOULÉE (version 2) =====================
 // Métaphore : le moteur (engine.js) est l'entraîneur qui mesure ; ce fichier est le vestiaire avec 4 portes (les onglets) :
@@ -606,9 +1334,9 @@ function loadHist() {                                      // lit l'historique
   try { const v1 = JSON.parse(localStorage.getItem(OLD_STORE)); if (Array.isArray(v1)) return v1; } catch (e) {} // ancien tiroir (version 1)
   return [];                                               // rien du tout
 }
-function saveHist(h) { try { localStorage.setItem(STORE, JSON.stringify(h.slice(0, 20))); } catch (e) {} } // range les 20 dernières analyses
+function saveHist(h) { try { localStorage.setItem(STORE, JSON.stringify(h.slice(0, 50))); } catch (e) {} } // range les 50 dernières analyses
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); } // protège un texte avant affichage
-function fr(v, d) { return Number(v).toFixed(d || 0).replace('.', ','); } // nombre à la française (virgule)
+function fr(v, d) { return Number(v).toFixed(d || 0).replace('.', DEC); } // nombre écrit selon la langue (virgule en français, point en anglais)
 function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); } // lit une couleur du thème
 function buzz(ms) { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) {} } // petite vibration (retour « haptique »)
 let toastTimer = 0;                                        // minuterie du message éphémère
@@ -652,29 +1380,30 @@ document.querySelectorAll('.tab-btn').forEach((b, i, all) => { // chaque bouton 
 
 // ---------- Fiches des mesures : nom, unité, règle graduée, zone idéale, explication ----------
 const INFO = {
-  cadence: { name: 'Cadence', unit: 'pas/min', min: 140, max: 200, zone: [170, 190], fmt: v => fr(v), center: 180,
-    why: 'Nombre de pas par minute. Une cadence un peu plus élevée raccourcit la foulée et réduit le choc sur les genoux et les hanches : augmenter sa cadence de 5 à 10 % diminue nettement la charge sur ces articulations (Heiderscheit et al., 2011). Elle augmente naturellement avec la vitesse.' },
-  shin: { name: 'Pied devant le corps', unit: '° tibia', min: -15, max: 30, zone: [-10, 7], fmt: v => fr(v), center: 0,
-    why: 'Angle du tibia quand le pied touche le sol. Proche de la verticale (0°) : le pied se pose sous le corps. Très positif : le pied atterrit loin devant, chaque pas freine et le choc remonte dans le genou (« overstriding »).' },
-  knee: { name: 'Genou à l\'attaque', unit: '° de flexion', min: 0, max: 50, zone: [12, 32], fmt: v => fr(v), center: 22,
-    why: 'Un genou légèrement plié quand le pied touche le sol (environ 15 à 30°) joue le rôle d\'amortisseur. Une jambe presque tendue rend l\'atterrissage plus sec.' },
-  trunk: { name: 'Inclinaison du buste', unit: '° vers l\'avant', min: -10, max: 25, zone: [3, 12], fmt: v => fr(v), center: 7.5,
-    why: 'Une légère inclinaison vers l\'avant, depuis les chevilles, aide à avancer. Trop penché (cassé à la taille), le bas du dos travaille trop ; penché en arrière, on freine.' },
-  osc: { name: 'Rebond vertical', unit: '', min: 0, max: 0.2, zone: [0, 0.09], fmt: v => fr(v, 2), center: 0.05,
-    why: 'De combien votre bassin monte et descend à chaque pas. Trop de rebond gaspille de l\'énergie et augmente l\'impact à chaque atterrissage : on veut avancer, pas sauter.' },
-  elbow: { name: 'Angle du coude', unit: '°', min: 30, max: 170, zone: [60, 110], fmt: v => fr(v), center: 85,
-    why: 'Des coudes pliés autour de 90°, épaules relâchées, donnent un balancier efficace qui équilibre les jambes.' },
+  cadence: { name: T('Cadence'), unit: T('pas/min'), min: 140, max: 200, zone: [170, 190], fmt: v => fr(v), center: 180,
+    why: T('Nombre de pas par minute. Une cadence un peu plus élevée raccourcit la foulée et réduit le choc sur les genoux et les hanches : augmenter sa cadence de 5 à 10 % diminue nettement la charge sur ces articulations (Heiderscheit et al., 2011). Elle augmente naturellement avec la vitesse.') },
+  shin: { name: T('Pied devant le corps'), unit: T('° tibia'), min: -15, max: 30, zone: [-10, 7], fmt: v => fr(v), center: 0,
+    why: T('Angle du tibia quand le pied touche le sol. Proche de la verticale (0°) : le pied se pose sous le corps. Très positif : le pied atterrit loin devant, chaque pas freine et le choc remonte dans le genou (« overstriding »).') },
+  knee: { name: T('Genou à l\'attaque'), unit: T('° de flexion'), min: 0, max: 50, zone: [12, 32], fmt: v => fr(v), center: 22,
+    why: T('Un genou légèrement plié quand le pied touche le sol (environ 15 à 30°) joue le rôle d\'amortisseur. Une jambe presque tendue rend l\'atterrissage plus sec.') },
+  trunk: { name: T('Inclinaison du buste'), unit: T('° vers l\'avant'), min: -10, max: 25, zone: [3, 12], fmt: v => fr(v), center: 7.5,
+    why: T('Une légère inclinaison vers l\'avant, depuis les chevilles, aide à avancer. Trop penché (cassé à la taille), le bas du dos travaille trop ; penché en arrière, on freine.') },
+  osc: { name: T('Rebond vertical'), unit: '', min: 0, max: 0.2, zone: [0, 0.09], fmt: v => fr(v, 2), center: 0.05,
+    why: T('De combien votre bassin monte et descend à chaque pas. Trop de rebond gaspille de l\'énergie et augmente l\'impact à chaque atterrissage : on veut avancer, pas sauter.') },
+  asym: { name: T('Équilibre gauche / droite'), unit: '%', min: -15, max: 15, zone: [-4, 4], fmt: v => fr(v, 1), center: 0, why: '' }, // écart entre les pas gauche et droit (comparaison avant / après)
+  elbow: { name: T('Angle du coude'), unit: '°', min: 30, max: 170, zone: [60, 110], fmt: v => fr(v), center: 85,
+    why: T('Des coudes pliés autour de 90°, épaules relâchées, donnent un balancier efficace qui équilibre les jambes.') },
 };
-const COLOR_TXT = { good: 'Bon repère', warn: 'À surveiller', bad: 'À travailler' }; // libellé des pastilles
-const FOOT_TXT = { heel: 'Talon d\'abord', mid: 'Médio-pied', fore: 'Avant-pied' };  // types d'attaque du pied
+const COLOR_TXT = { good: T('Bon repère'), warn: T('À surveiller'), bad: T('À travailler') }; // libellé des pastilles
+const FOOT_TXT = { heel: T('Talon d\'abord'), mid: T('Médio-pied'), fore: T('Avant-pied') };  // types d'attaque du pied
 const QUALITY_TXT = {                                      // conseils quand la vidéo n'est pas idéale
-  detect: 'L\'IA n\'a pas trouvé la personne sur une bonne partie de la vidéo : rapprochez-vous et filmez avec plus de lumière.',
-  visibility: 'Les jambes sont mal visibles : filmez tout le corps, pieds compris, sans obstacle devant.',
-  notSide: 'La vidéo ne semble pas prise exactement de profil : placez-vous bien sur le côté du coureur.',
-  short: 'Vidéo trop courte : il faut au moins 3 secondes de course régulière.',
-  small: 'La personne est trop petite dans l\'image : rapprochez-vous (3 à 4 mètres).',
-  fewSteps: 'Trop peu de pas détectés : filmez 8 à 12 secondes de course régulière.',
-  notRunning: 'Cette vidéo ne ressemble pas à de la course (pieds qui montent peu ou rythme inhabituel). Filmez une course régulière, pas de la marche.',
+  detect: T('L\'IA n\'a pas trouvé la personne sur une bonne partie de la vidéo : rapprochez-vous et filmez avec plus de lumière.'),
+  visibility: T('Les jambes sont mal visibles : filmez tout le corps, pieds compris, sans obstacle devant.'),
+  notSide: T('La vidéo ne semble pas prise exactement de profil : placez-vous bien sur le côté du coureur.'),
+  short: T('Vidéo trop courte : il faut au moins 3 secondes de course régulière.'),
+  small: T('La personne est trop petite dans l\'image : rapprochez-vous (3 à 4 mètres).'),
+  fewSteps: T('Trop peu de pas détectés : filmez 8 à 12 secondes de course régulière.'),
+  notRunning: T('Cette vidéo ne ressemble pas à de la course (pieds qui montent peu ou rythme inhabituel). Filmez une course régulière, pas de la marche.'),
 };
 
 // ---------- Dessin de la silhouette ----------
@@ -715,10 +1444,10 @@ function drawKey(canvas, img, srcW, srcH, lm, res) {       // la « photo de sil
     ctx.fillStyle = css('--ink'); ctx.fillRect(lx, ly - th, tw, th + 4); // fond
     ctx.fillStyle = css('--bg'); ctx.fillText(txt, lx + 6, ly - 4); // texte
   };
-  if (Number.isFinite(m.shin)) label('Tibia ' + fr(m.shin) + '°', ank.x * w + res.dir * 14, ank.y * h - h * 0.08); // angle du tibia
-  if (Number.isFinite(m.knee)) label('Genou ' + fr(m.knee) + '°', knee.x * w + res.dir * 14, knee.y * h); // flexion du genou
+  if (Number.isFinite(m.shin)) label(T('Tibia ') + fr(m.shin) + '°', ank.x * w + res.dir * 14, ank.y * h - h * 0.08); // angle du tibia
+  if (Number.isFinite(m.knee)) label(T('Genou ') + fr(m.knee) + '°', knee.x * w + res.dir * 14, knee.y * h); // flexion du genou
   const sh = lm[S.sh];                                     // épaule
-  if (Number.isFinite(m.trunk)) label('Buste ' + fr(m.trunk) + '°', sh.x * w + res.dir * 16, sh.y * h); // inclinaison du buste
+  if (Number.isFinite(m.trunk)) label(T('Buste ') + fr(m.trunk) + '°', sh.x * w + res.dir * 16, sh.y * h); // inclinaison du buste
 }
 
 // ---------- L'IA (chargée seulement quand on en a besoin) ----------
@@ -749,13 +1478,16 @@ function seek(video, t) {                                  // place la vidéo à
 }
 
 // ---------- Analyse d'une vraie vidéo ----------
-async function analyzeVideo(file) {
-  const fpsSel = Number($('speed').value);                 // type de vidéo choisi
+let replayURL = null;                                      // adresse (dans le téléphone) de la dernière vidéo analysée, gardée pour « Revoir ma vidéo »
+async function analyzeVideo(file, opt) {
+  opt = opt || {};                                         // options (l'assistant de tournage donne la cadence d'images réelle de la caméra)
+  const fpsSel = opt.fps ? (opt.fps >= 50 ? 60 : 30) : Number($('speed').value); // type de vidéo : choisi par la personne, ou connu grâce à la caméra
   const slow = fpsSel >= 120 ? fpsSel / 30 : 1;            // ralenti : 1 s de vidéo = 1/4 ou 1/8 s de course
   const step = fpsSel === 60 ? 1 / 60 : 1 / 30;            // écart entre deux images analysées (temps de la vidéo)
   const heightCm = Number($('height').value) || null;      // taille, si donnée
-  showWork('Préparation de l\'IA…', 0);                   // message d'attente
+  showWork(T('Préparation de l\'IA…'), 0);                   // message d'attente
   const video = $('vid');                                  // lecteur vidéo invisible
+  if (replayURL) { URL.revokeObjectURL(replayURL); replayURL = null; } // on libère la vidéo précédente
   video.src = URL.createObjectURL(file);                   // la vidéo choisie (elle reste dans le téléphone)
   await new Promise((ok, ko) => { video.onloadedmetadata = ok; video.onerror = () => ko(new Error('video')); video.load(); }); // attendre de connaître la durée et la taille
   if (!(video.videoWidth > 0)) throw new Error('video');   // vidéo illisible
@@ -773,25 +1505,58 @@ async function analyzeVideo(file) {
   const frames = [];                                       // les 33 points de chaque image
   stopAsked = false;                                       // pas d'arrêt demandé
   const total = Math.max(1, Math.floor((end - start) / step)); // nombre d'images à analyser
-  for (let k = 0; k <= total; k++) {                       // image par image
+  const onFrame = async vt => {                            // traite l'image affichée à l'instant vt de la vidéo
     if (stopAsked) throw new Error('stopped');             // l'utilisateur a arrêté
-    const vt = start + k * step;                           // instant dans la vidéo
-    await seek(video, vt);                                 // on s'y place
     gctx.drawImage(video, 0, 0, grab.width, grab.height);  // on copie l'image
     const r = await detect(grab);                          // l'IA cherche le corps
     const lm = r.poseLandmarks ? r.poseLandmarks.map(p => ({ x: p.x, y: p.y, visibility: p.visibility })) : null; // les 33 points (ou rien)
     const world = r.poseWorldLandmarks ? r.poseWorldLandmarks.map(p => ({ x: p.x, y: p.y, z: p.z })) : null; // les mêmes points en 3D, en mètres (sert au double 3D)
-    frames.push({ t: (vt - start) / slow, lm, world });    // instant réel de la course + points
+    frames.push({ t: (vt - start) / slow, vt, lm, world }); // instant réel de la course, instant dans la vidéo, points
     lctx.drawImage(video, 0, 0, live.width, live.height);  // aperçu
     if (lm) drawSkeleton(lctx, lm, live.width, live.height, null); // squelette par-dessus (le côté visible sera choisi à la fin)
-    showWork('Analyse de l\'image ' + (k + 1) + ' sur ' + (total + 1) + '…', (k + 1) / (total + 1)); // progression
+    showWork(T('Analyse de l\'image ') + frames.length + T(' sur ') + (total + 1) + '…', Math.min(1, frames.length / (total + 1))); // progression
+  };
+  // Deux façons de parcourir la vidéo. Métaphore : feuilleter un livre page par page (« sauter » à chaque image) ou le lire d'une traite.
+  // Les vidéos du téléphone ont une table des matières : on saute vite. Celles enregistrées par l'app n'en ont pas : chaque saut
+  // oblige à tout relire depuis le début. Dans ce cas, on lit la vidéo d'une traite en s'arrêtant sur chaque image.
+  let k = 0, slowSeeks = 0;                                // image en cours, et nombre de sauts lents
+  const canStream = 'requestVideoFrameCallback' in HTMLVideoElement.prototype; // lecture image par image possible ?
+  for (; k <= total; k++) {                                // mode « sauts »
+    const vt = start + k * step;                           // instant dans la vidéo
+    const t0 = performance.now(); await seek(video, vt); if (performance.now() - t0 > 350) slowSeeks++; // on s'y place (en mesurant le temps du saut)
+    await onFrame(vt);                                     // on traite l'image
+    if (canStream && k >= 2 && slowSeeks >= 2) { k++; break; } // sauts trop lents : on passe en lecture continue
   }
+  if (k <= total) await streamFrames(video, start + k * step, end, step, onFrame); // lecture continue pour le reste de la vidéo
+  window.__lastFrames = { frames, W, H };                  // (pour les tests automatiques)
   const res = analyze(frames, W, H, { heightCm });         // le moteur calcule tout
   let keyImg = null;                                       // l'image clé (silhouette au contact)
-  if (res.keyFrame >= 0) { await seek(video, start + res.keyFrame * step); keyImg = video; } // on revient sur l'image du contact
+  if (res.keyFrame >= 0 && frames[res.keyFrame]) { await seek(video, frames[res.keyFrame].vt); keyImg = video; } // on revient sur l'image du contact
   hideWork();                                              // fin de l'attente
-  showResults(res, { kind: 'video', img: keyImg, W, H, frames, lm: frames[res.keyFrame] && frames[res.keyFrame].lm, heightCm }); // on affiche
-  URL.revokeObjectURL(video.src);                          // on libère la mémoire
+  replayURL = video.src;                                   // on garde la vidéo (en mémoire seulement) pour pouvoir la revoir
+  showResults(res, { kind: 'video', img: keyImg, W, H, frames, lm: frames[res.keyFrame] && frames[res.keyFrame].lm, heightCm, url: replayURL, start, slow, step }); // on affiche
+}
+
+function streamFrames(video, from, to, step, onFrame) {   // lecture continue : la vidéo joue, et s'arrête sur chaque image le temps que l'IA la regarde
+  return new Promise((resolve, reject) => {                // on attend la fin du parcours
+    let last = -1e9, finished = false;                     // dernière image traitée, et fin
+    const finish = () => { if (!finished) { finished = true; video.pause(); video.onended = null; resolve(); } }; // terminé
+    const cb = async (now, meta) => {                      // une nouvelle image vient de s'afficher
+      if (finished) return;                                // déjà fini
+      video.pause();                                       // pause : l'IA prend son temps
+      const mt = meta.mediaTime;                           // instant exact de cette image dans la vidéo
+      try {
+        if (mt > to) { finish(); return; }                 // au-delà de la partie à analyser : terminé
+        if (mt >= from - 1e-3 && mt - last >= step * 0.9) { last = mt; await onFrame(mt); } // on garde une image par pas (ex. 1/30 s), même si la vidéo en a plus
+      } catch (e) { finished = true; video.pause(); reject(e); return; } // arrêt demandé ou erreur
+      video.requestVideoFrameCallback(cb);                 // on veut être prévenu de l'image suivante…
+      video.play().catch(finish);                          // …et on relance la lecture
+    };
+    video.onended = finish;                                // fin de la vidéo : terminé
+    video.requestVideoFrameCallback(cb);                   // prévenir à chaque image
+    video.currentTime = from;                              // un seul saut, au début
+    video.play().catch(e => { if (!finished) { finished = true; reject(e); } }); // c'est parti
+  });
 }
 
 // ---------- Exemple (coureur simulé) ----------
@@ -807,8 +1572,8 @@ let lastRun = null, runId = 0;                             // la dernière analy
 function rulerHtml(info, v, zone) {                        // la règle graduée d'une mesure
   const pct = x => Math.max(0, Math.min(100, (x - info.min) / (info.max - info.min) * 100)); // position en %
   const z = zone || info.zone;                             // zone idéale
-  return '<div class="ruler" aria-hidden="true">' + (z ? '<span class="zone" style="left:' + pct(z[0]) + '%;width:' + (pct(z[1]) - pct(z[0])) + '%"></span>' : '') +
-    '<span class="mark" style="left:' + pct(v) + '%"></span></div>'; // la règle et la marque
+  return '<div class="ruler" aria-hidden="true">' + (z ? T('<span class="zone" style="left:') + pct(z[0]) + '%;width:' + (pct(z[1]) - pct(z[0])) + '%"></span>' : '') +
+    T('<span class="mark" style="left:') + pct(v) + '%"></span></div>'; // la règle et la marque
 }
 function dotsHtml(vals) {                                  // petites barres : la mesure pas après pas (régularité)
   const v = vals.filter(Number.isFinite);                  // valeurs connues
@@ -829,22 +1594,25 @@ function showResults(res, ctx) {
   const m = res.metrics, g = grade(m);                     // mesures et couleurs
   const fatal = !Number.isFinite(m.cadence) || res.quality.includes('notRunning') || res.quality.includes('fewSteps') || res.quality.includes('detect') && res.detected < 0.3; // impossible d'analyser
   $('results').hidden = false; $('cardBox').hidden = true; // la carte des résultats apparaît (l'ancienne carte de partage disparaît)
-  $('resKind').textContent = ctx.kind === 'demo' ? 'Exemple · coureur simulé' : 'Votre vidéo'; // origine des résultats
+  $('resKind').textContent = ctx.kind === 'demo' ? T('Exemple · coureur simulé') : T('Votre vidéo'); // origine des résultats
   const q = res.quality.filter(k => QUALITY_TXT[k]);       // problèmes de qualité
   $('qualityBox').hidden = !q.length;                      // encadré seulement si besoin
-  $('qualityBox').innerHTML = q.length ? '<b>' + (fatal ? 'Analyse impossible avec cette vidéo.' : 'Résultats à prendre avec prudence.') + '</b>' + q.map(k => '<span>' + QUALITY_TXT[k] + '</span>').join('') : ''; // conseils de tournage
+  $('qualityBox').innerHTML = q.length ? '<b>' + (fatal ? T('Analyse impossible avec cette vidéo.') : T('Résultats à prendre avec prudence.')) + '</b>' + q.map(k => '<span>' + QUALITY_TXT[k] + '</span>').join('') : ''; // conseils de tournage
   drawKey($('key'), ctx.img, ctx.W, ctx.H, ctx.lm, res);   // la silhouette annotée
+  $('tiltNote').hidden = !(Math.abs(res.tilt || 0) >= 0.7); // téléphone penché : on le dit
+  $('tiltNote').textContent = T('Téléphone penché de ') + fr(Math.abs(res.tilt || 0), 1) + T('° : les angles ont été redressés automatiquement (ligne du sol détectée).'); // le message
+  setupReplay(ctx, res);                                   // « Revoir ma vidéo » (seulement pour une vraie vidéo)
   const scroll = () => $('results').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' }); // on descend vers les résultats
   if (fatal) {                                             // rien de fiable : on n'affiche pas de chiffres
-    $('scoreNum').textContent = '–'; $('scoreTitle').textContent = 'Réessayez avec une autre vidéo'; $('scoreText').textContent = 'Suivez les 4 conseils « Comment filmer » ci-dessus.';
+    $('scoreNum').textContent = '–'; $('scoreTitle').textContent = T('Réessayez avec une autre vidéo'); $('scoreText').textContent = T('Suivez les 4 conseils « Comment filmer » ci-dessus.');
     setScore(0); $('metrics').innerHTML = ''; $('alertsBox').hidden = true; $('drills').innerHTML = ''; // tout est vidé
     $('go3d').hidden = true; $('shareCard').hidden = true; lastRun = null; scroll(); return; // pas de 3D ni de carte
   }
   $('go3d').hidden = false; $('shareCard').hidden = false; // boutons 3D et partage
   const sc = g.score, col = scoreColor(sc);                // score sur 100 et sa couleur
   $('scoreNum').textContent = sc; setScore(sc);            // le chiffre et l'anneau
-  $('scoreTitle').textContent = col === 'good' ? 'Belle foulée' : col === 'warn' ? 'Bonne base, quelques réglages' : 'Des points à travailler'; // titre
-  $('scoreText').textContent = 'Score calculé sur ' + Object.keys(g.colors).length + ' repères, pondérés selon leur lien avec les blessures. ' + res.contacts.length + ' appuis analysés.'; // détail
+  $('scoreTitle').textContent = col === 'good' ? T('Belle foulée') : col === 'warn' ? T('Bonne base, quelques réglages') : T('Des points à travailler'); // titre
+  $('scoreText').textContent = T('Score calculé sur ') + Object.keys(g.colors).length + T(' repères, pondérés selon leur lien avec les blessures. ') + res.contacts.length + T(' appuis analysés.'); // détail
   const tiles = [];                                        // les tuiles « bento »
   for (const k of ['cadence', 'shin', 'knee', 'trunk', 'osc', 'elbow']) { // dans cet ordre
     if (!Number.isFinite(m[k])) continue;                  // mesure impossible
@@ -852,32 +1620,34 @@ function showResults(res, ctx) {
     let v = m[k], zone = null, pm = res.spread && res.spread[k]; // valeur affichée, zone idéale, variation d'un pas à l'autre
     if (k === 'osc') {                                     // le rebond s'affiche en cm si la taille est connue
       if (ctx.heightCm) { const f = 0.49 * ctx.heightCm; v = m.osc * f; pm = pm * f; Object.assign(info, { unit: 'cm', min: 0, max: 0.2 * f, fmt: x => fr(x, 1) }); zone = [0, 0.09 * f]; } // en cm (une jambe ≈ 49 % de la taille)
-      else { v = m.osc * 100; pm = pm * 100; Object.assign(info, { unit: '% de la jambe', min: 0, max: 20, fmt: x => fr(x) }); zone = [0, 9]; } // en % de longueur de jambe
+      else { v = m.osc * 100; pm = pm * 100; Object.assign(info, { unit: T('% de la jambe'), min: 0, max: 20, fmt: x => fr(x) }); zone = [0, 9]; } // en % de longueur de jambe
     }
     const c = g.colors[k];                                 // couleur
-    const pmTxt = Number.isFinite(pm) && pm > 0 && !/^0(,0+)?$/.test(info.fmt(pm)) ? '<span class="pm">± ' + info.fmt(pm) + ' d\'un pas à l\'autre</span>' : ''; // la régularité
+    const pmTxt = Number.isFinite(pm) && pm > 0 && !/^0([.,]0+)?$/.test(info.fmt(pm)) ? '<span class="pm">± ' + info.fmt(pm) + T(' d\'un pas à l\'autre</span>') : ''; // la régularité
     const dots = k === 'shin' && res.perStride ? dotsHtml(res.perStride.shin) : k === 'knee' && res.perStride ? dotsHtml(res.perStride.knee) : ''; // barres pas par pas
-    tiles.push('<div class="tile' + (k === 'cadence' ? ' wide' : '') + '"><div class="tile-top"><span class="tile-name">' + info.name + '</span><span class="chip ' + c + '">' + COLOR_TXT[c] + '</span></div>' +
-      '<div class="tile-val">' + info.fmt(v) + ' <small>' + info.unit + '</small></div>' + pmTxt + rulerHtml(info, v, zone) + dots +
-      '<details class="why"><summary>Pourquoi c\'est important</summary><p>' + info.why + '</p></details></div>'); // la tuile
+    tiles.push(T('<div class="tile') + (k === 'cadence' ? T(' wide') : '') + T('"><div class="tile-top"><span class="tile-name">') + info.name + T('</span><span class="chip ') + c + '">' + COLOR_TXT[c] + '</span></div>' +
+      '<div class="tile-val">' + info.fmt(v) + T(' <small>') + info.unit + '</small></div>' + pmTxt + rulerHtml(info, v, zone) + dots + confHtml(res, k) +
+      T('<details class="why"><summary>Pourquoi c\'est important</summary><p>') + info.why + '</p></details></div>'); // la tuile
   }
-  if (g.foot) tiles.push('<div class="tile wide"><div class="tile-top"><span class="tile-name">Attaque du pied</span><span class="chip info">Information</span></div>' +
-    '<div class="tile-val">' + FOOT_TXT[g.foot] + ' <small>' + fr(m.foot) + '°</small></div>' +
-    '<details class="why"><summary>Pourquoi c\'est important</summary><p>Talon, médio-pied ou avant-pied : aucune attaque n\'est « la bonne » pour tout le monde, et les études ne montrent pas qu\'une seule protège des blessures. L\'attaque talon devient surtout un problème quand le pied atterrit aussi loin devant le corps. Changer d\'attaque déplace la charge (par exemple vers les mollets) : à faire très progressivement.</p></details></div>'); // l'attaque du pied
+  if (g.foot) tiles.push(T('<div class="tile wide"><div class="tile-top"><span class="tile-name">Attaque du pied</span><span class="chip info">Information</span></div>') +
+    '<div class="tile-val">' + FOOT_TXT[g.foot] + T(' <small>') + fr(m.foot) + '°</small></div>' +
+    T('<details class="why"><summary>Pourquoi c\'est important</summary><p>Talon, médio-pied ou avant-pied : aucune attaque n\'est « la bonne » pour tout le monde, et les études ne montrent pas qu\'une seule protège des blessures. L\'attaque talon devient surtout un problème quand le pied atterrit aussi loin devant le corps. Changer d\'attaque déplace la charge (par exemple vers les mollets) : à faire très progressivement.</p></details></div>')); // l'attaque du pied
+  tiles.push(...extraTiles(res, g));                       // nouvelles tuiles : contact au sol, équilibre gauche / droite
   $('metrics').innerHTML = tiles.join('');                 // on affiche les tuiles
   const alerts = [], drills = [];                          // points d'attention et exercices
   const target = Math.min(185, Math.round(m.cadence * 1.05)); // cadence conseillée : +5 %
-  if (g.colors.cadence !== 'good') { drills.push('Cadence : courez 5 minutes avec le métronome (onglet Coach) réglé à <b>' + target + ' pas/min</b> (+5 %), 2 à 3 fois par semaine, puis gardez ce rythme sur des sorties plus longues.'); }
-  if (g.colors.shin && g.colors.shin !== 'good') { drills.push('Pied sous le corps : pensez « poser le pied sous les hanches ». Éducatifs : montées de genoux (skipping) 3 × 20 m et quelques accélérations en légère montée.'); }
-  if ((g.colors.cadence === 'bad' || g.colors.cadence === 'warn') && (g.colors.shin === 'bad' || g.colors.shin === 'warn')) alerts.push('<b>Genoux et tibias</b> : une cadence basse avec le pied loin devant le corps est associée, dans les études, à des forces de freinage et d\'impact plus élevées (douleurs à l\'avant du genou, périostite). C\'est aussi le schéma le plus facile à améliorer.');
-  else if (g.colors.shin === 'bad') alerts.push('<b>Genoux</b> : le pied atterrit loin devant le corps, ce qui augmente le freinage et le choc transmis au genou.');
-  if (g.colors.knee === 'bad' || g.colors.knee === 'warn' && m.knee < 12) { alerts.push('<b>Atterrissage rigide</b> : jambe presque tendue au contact, l\'amorti se fait moins bien au niveau du genou et de la hanche.'); drills.push('Amorti : talons-fesses 3 × 20 m, et une foulée un peu plus courte pour poser le pied jambe légèrement pliée.'); }
-  if (g.colors.trunk && g.colors.trunk !== 'good') { alerts.push(m.trunk < 3 ? '<b>Buste trop droit ou en arrière</b> : cela freine la course.' : '<b>Buste très penché</b> : le bas du dos et l\'arrière des cuisses travaillent davantage.'); drills.push('Posture : gainage (planche) 3 × 30 secondes ; en courant, « grandissez-vous » et penchez-vous légèrement depuis les chevilles, pas depuis la taille.'); }
-  if (g.colors.osc && g.colors.osc !== 'good') { alerts.push('<b>Rebond important</b> : impacts plus forts à chaque atterrissage, mollets et tendons d\'Achille plus sollicités.'); drills.push('Rebond : pensez « avancer, pas sauter ». Corde à sauter légère, 3 × 1 minute, petits sauts rapides.'); }
-  if (g.colors.elbow && g.colors.elbow !== 'good') drills.push('Bras : coudes pliés autour de 90°, épaules basses et relâchées, les mains frôlent les hanches.');
-  if (Number.isFinite(m.head) && m.head > 0.15) drills.push('Tête : regard droit devant, à 15-20 m, menton rentré ; la tête reste au-dessus des épaules.');
-  if (g.foot === 'fore') alerts.push('<b>Mollets et tendon d\'Achille</b> : l\'attaque avant-pied les sollicite davantage ; si c\'est récent pour vous, augmentez les distances progressivement.');
-  if (!drills.length) drills.push('Continuez ainsi ! Refaites une analyse dans 4 à 6 semaines, ou en fin de sortie quand la fatigue change la foulée.');
+  if (g.colors.cadence !== 'good') { drills.push(T('Cadence : courez 5 minutes avec le métronome (onglet Coach) réglé à <b>') + target + T(' pas/min</b> (+5 %), 2 à 3 fois par semaine, puis gardez ce rythme sur des sorties plus longues.')); }
+  if (g.colors.shin && g.colors.shin !== 'good') { drills.push(T('Pied sous le corps : pensez « poser le pied sous les hanches ». Éducatifs : montées de genoux (skipping) 3 × 20 m et quelques accélérations en légère montée.')); }
+  if ((g.colors.cadence === 'bad' || g.colors.cadence === 'warn') && (g.colors.shin === 'bad' || g.colors.shin === 'warn')) alerts.push(T('<b>Genoux et tibias</b> : une cadence basse avec le pied loin devant le corps est associée, dans les études, à des forces de freinage et d\'impact plus élevées (douleurs à l\'avant du genou, périostite). C\'est aussi le schéma le plus facile à améliorer.'));
+  else if (g.colors.shin === 'bad') alerts.push(T('<b>Genoux</b> : le pied atterrit loin devant le corps, ce qui augmente le freinage et le choc transmis au genou.'));
+  if (g.colors.knee === 'bad' || g.colors.knee === 'warn' && m.knee < 12) { alerts.push(T('<b>Atterrissage rigide</b> : jambe presque tendue au contact, l\'amorti se fait moins bien au niveau du genou et de la hanche.')); drills.push(T('Amorti : talons-fesses 3 × 20 m, et une foulée un peu plus courte pour poser le pied jambe légèrement pliée.')); }
+  if (g.colors.trunk && g.colors.trunk !== 'good') { alerts.push(m.trunk < 3 ? T('<b>Buste trop droit ou en arrière</b> : cela freine la course.') : T('<b>Buste très penché</b> : le bas du dos et l\'arrière des cuisses travaillent davantage.')); drills.push(T('Posture : gainage (planche) 3 × 30 secondes ; en courant, « grandissez-vous » et penchez-vous légèrement depuis les chevilles, pas depuis la taille.')); }
+  if (g.colors.osc && g.colors.osc !== 'good') { alerts.push(T('<b>Rebond important</b> : impacts plus forts à chaque atterrissage, mollets et tendons d\'Achille plus sollicités.')); drills.push(T('Rebond : pensez « avancer, pas sauter ». Corde à sauter légère, 3 × 1 minute, petits sauts rapides.')); }
+  if (g.colors.elbow && g.colors.elbow !== 'good') drills.push(T('Bras : coudes pliés autour de 90°, épaules basses et relâchées, les mains frôlent les hanches.'));
+  if (Number.isFinite(m.head) && m.head > 0.15) drills.push(T('Tête : regard droit devant, à 15-20 m, menton rentré ; la tête reste au-dessus des épaules.'));
+  if (g.colors.asym === 'bad' && res.conf && res.conf.asym !== 'low') alerts.push(T('<b>Asymétrie</b> : vos pas ne durent pas autant à gauche et à droite (écart de ') + fr(Math.abs(m.asym), 1) + T(' %). Si cela se confirme sur plusieurs vidéos, surtout avec une douleur, parlez-en à un kinésithérapeute.')); // déséquilibre net et fiable
+  if (g.foot === 'fore') alerts.push(T('<b>Mollets et tendon d\'Achille</b> : l\'attaque avant-pied les sollicite davantage ; si c\'est récent pour vous, augmentez les distances progressivement.'));
+  if (!drills.length) drills.push(T('Continuez ainsi ! Refaites une analyse dans 4 à 6 semaines, ou en fin de sortie quand la fatigue change la foulée.'));
   $('alertsBox').hidden = !alerts.length;                  // encadré seulement s'il y a quelque chose
   $('alerts').innerHTML = alerts.map(a => '<li>' + a + '</li>').join(''); // les points d'attention
   $('drills').innerHTML = drills.map(d => '<li>' + d + '</li>').join(''); // les exercices
@@ -915,15 +1685,15 @@ function makeCard() {                                      // fabrique une carte
   const c = cv.getContext('2d'), D = css('--display') || 'sans-serif', B = css('--body') || 'sans-serif'; // pinceau et polices
   const bg = c.createLinearGradient(0, 0, 1080, 1350); bg.addColorStop(0, '#0B1220'); bg.addColorStop(1, '#13224A'); c.fillStyle = bg; c.fillRect(0, 0, 1080, 1350); // fond bleu nuit
   c.save(); c.beginPath(); c.rect(0, 1240, 1080, 110); c.clip(); c.globalAlpha = 0.35; c.strokeStyle = '#FF6A2E'; c.lineWidth = 5; for (let i = -6; i < 14; i++) { c.beginPath(); c.moveTo(i * 120, 1350); c.lineTo(540 + (i - 4) * 40, 1240); c.stroke(); } c.restore(); // couloirs de piste en perspective, tout en bas
-  c.fillStyle = '#F2F5FA'; c.font = '800 96px ' + D; c.fillText('FOULÉE', 64, 130); // le nom
-  c.fillStyle = '#B8C3D6'; c.font = '500 34px ' + B; c.fillText(lastRun.kind === 'demo' ? 'Exemple · coureur simulé' : new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date()), 64, 182); // la date
+  c.fillStyle = '#F2F5FA'; c.font = '800 96px ' + D; c.fillText(T('FOULÉE'), 64, 130); // le nom
+  c.fillStyle = '#B8C3D6'; c.font = '500 34px ' + B; c.fillText(lastRun.kind === 'demo' ? T('Exemple · coureur simulé') : new Intl.DateTimeFormat(LOCALE, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date()), 64, 182); // la date
   const col = { good: '#45D18B', warn: '#F3BC48', bad: '#FF7A7E' }; // couleurs des repères
   c.lineWidth = 26; c.strokeStyle = 'rgba(255,255,255,0.12)'; c.beginPath(); c.arc(880, 130, 92, 0, 2 * Math.PI); c.stroke(); // anneau vide
   c.strokeStyle = col[scoreColor(g.score)]; c.lineCap = 'round'; c.beginPath(); c.arc(880, 130, 92, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * g.score / 100); c.stroke(); // anneau du score
   c.fillStyle = '#F2F5FA'; c.textAlign = 'center'; c.font = '800 84px ' + D; c.fillText(String(g.score), 880, 158); c.textAlign = 'left'; // le score
   const key = $('key'), kw = 952, kh = Math.min(600, kw * key.height / key.width); // la silhouette
   c.save(); roundRect(c, 64, 230, kw, kh, 36); c.clip(); c.fillStyle = '#1B2740'; c.fillRect(64, 230, kw, kh); c.drawImage(key, 64, 230, kw, kh); c.restore(); // collée avec coins arrondis
-  const items = [['Cadence', fr(m.cadence), 'pas/min', g.colors.cadence], ['Tibia', fr(m.shin) + '°', 'au contact', g.colors.shin], ['Genou', fr(m.knee) + '°', 'de flexion', g.colors.knee], ['Buste', fr(m.trunk) + '°', 'vers l\'avant', g.colors.trunk]]; // 4 chiffres clés
+  const items = [[T('Cadence'), fr(m.cadence), T('pas/min'), g.colors.cadence], [T('Tibia'), fr(m.shin) + '°', T('au contact'), g.colors.shin], [T('Genou'), fr(m.knee) + '°', T('de flexion'), g.colors.knee], [T('Buste'), fr(m.trunk) + '°', T('vers l\'avant'), g.colors.trunk]]; // 4 chiffres clés
   items.forEach((it, i) => {                               // une tuile par chiffre
     const x = 64 + (i % 2) * 484, y = 230 + kh + 30 + Math.floor(i / 2) * 170; // position dans la grille
     c.fillStyle = 'rgba(255,255,255,0.08)'; roundRect(c, x, y, 468, 150, 30); c.fill(); // la tuile
@@ -932,7 +1702,7 @@ function makeCard() {                                      // fabrique une carte
     c.fillStyle = '#F2F5FA'; c.font = '800 66px ' + D; c.fillText(it[1], x + 28, y + 122); // valeur
     const vw = c.measureText(it[1]).width; c.fillStyle = '#B8C3D6'; c.font = '600 30px ' + D; c.fillText(it[2], x + 40 + vw, y + 120); // unité
   });
-  c.fillStyle = '#B8C3D6'; c.font = '500 28px ' + B; c.fillText('Analysé par l\'IA, dans mon téléphone · Foulée, gratuit', 64, 1222); // signature
+  c.fillStyle = '#B8C3D6'; c.font = '500 28px ' + B; c.fillText(T('Analysé par l\'IA, dans mon téléphone · Foulée, gratuit'), 64, 1222); // signature
   return cv;                                               // la carte est prête
 }
 $('shareCard').addEventListener('click', async () => {     // « Partager ma carte »
@@ -940,8 +1710,8 @@ $('shareCard').addEventListener('click', async () => {     // « Partager ma car
   const cv = makeCard();                                   // on dessine la carte
   $('cardImg').src = cv.toDataURL('image/png'); $('cardBox').hidden = false; // aperçu dans la page
   const blob = await new Promise(ok => cv.toBlob(ok, 'image/png')); // l'image en fichier
-  try { const how = await shareBlob(blob, 'foulee-carte.png', 'Ma foulée'); $('cardHint').textContent = how === 'downloaded' ? 'Image prête. Si rien ne s\'est téléchargé, faites un appui long sur l\'image pour l\'enregistrer.' : 'Carte prête à partager.'; } // partage
-  catch (e) { $('cardHint').textContent = 'Partage annulé. Vous pouvez aussi faire un appui long sur l\'image pour l\'enregistrer.'; } // annulé ou impossible
+  try { const how = await shareBlob(blob, 'foulee-carte.png', T('Ma foulée')); $('cardHint').textContent = how === 'downloaded' ? T('Image prête. Si rien ne s\'est téléchargé, faites un appui long sur l\'image pour l\'enregistrer.') : T('Carte prête à partager.'); } // partage
+  catch (e) { $('cardHint').textContent = T('Partage annulé. Vous pouvez aussi faire un appui long sur l\'image pour l\'enregistrer.'); } // annulé ou impossible
   $('cardBox').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' }); // on montre la carte
 });
 $('go3d').addEventListener('click', () => showTab('double')); // « Voir mon double 3D »
@@ -1076,13 +1846,13 @@ function d3Frame(now) {                                    // dessine une image 
   D3.raf = requestAnimationFrame(d3Frame);                 // image suivante
 }
 function d3Show() {                                        // l'onglet 3D s'ouvre
-  if (!lastRun) { $('d3Intro').textContent = 'Analysez d\'abord une vidéo (ou l\'exemple) dans l\'onglet Analyse : votre double rejouera votre foulée en 3D.'; $('rec').disabled = true; return; } // rien à montrer
-  if (!d3Init()) { $('d3Intro').textContent = 'La 3D n\'a pas pu démarrer sur cet appareil (carte graphique indisponible).'; $('rec').disabled = true; return; } // pas de 3D possible
+  if (!lastRun) { $('d3Intro').textContent = T('Analysez d\'abord une vidéo (ou l\'exemple) dans l\'onglet Analyse : votre double rejouera votre foulée en 3D.'); $('rec').disabled = true; return; } // rien à montrer
+  if (!d3Init()) { $('d3Intro').textContent = T('La 3D n\'a pas pu démarrer sur cet appareil (carte graphique indisponible).'); $('rec').disabled = true; return; } // pas de 3D possible
   $('rec').disabled = false;                               // vidéo possible
-  $('d3Intro').textContent = 'Votre foulée rejouée en 3D. Faites tourner le double avec le doigt.'; // consigne
+  $('d3Intro').textContent = T('Votre foulée rejouée en 3D. Faites tourner le double avec le doigt.'); // consigne
   if (D3.builtFor !== runId) { D3.anim = d3Prepare(lastRun); D3.colors = lastRun.g.colors; D3.builtFor = runId; D3.t = 0; } // nouvelle analyse : on prépare l'animation
   const m = lastRun.res.metrics;                           // mesures pour l'affichage
-  $('hudL').textContent = fr(m.cadence) + ' pas/min'; $('hudR').textContent = 'Score ' + lastRun.g.score; // incrustations
+  $('hudL').textContent = fr(m.cadence) + T(' pas/min'); $('hudR').textContent = T('Score ') + lastRun.g.score; // incrustations
   D3.on = true; D3.last = 0; cancelAnimationFrame(D3.raf); D3.raf = requestAnimationFrame(d3Frame); // on lance l'animation
 }
 function d3Hide() { D3.on = false; cancelAnimationFrame(D3.raf); } // on endort la 3D
@@ -1096,32 +1866,32 @@ function pickMime() {                                      // format vidéo que 
 }
 $('rec').addEventListener('click', () => {                 // « Créer ma vidéo (6 s) »
   const mime = pickMime();                                 // format
-  if (!mime || !D3.on) { $('recHint').textContent = 'Ce téléphone ne sait pas enregistrer de vidéo depuis l\'app.'; return; } // impossible
+  if (!mime || !D3.on) { $('recHint').textContent = T('Ce téléphone ne sait pas enregistrer de vidéo depuis l\'app.'); return; } // impossible
   const comp = document.createElement('canvas'); comp.width = 720; comp.height = 720; const cx = comp.getContext('2d'); // toile de montage (3D + textes)
   const m = lastRun.res.metrics, D = css('--display') || 'sans-serif'; // mesures et police
   const draw = () => {                                     // une image du montage
     cx.fillStyle = '#0B1220'; cx.fillRect(0, 0, 720, 720); // fond
     cx.drawImage($('c3d'), 0, 0, 720, 720);                // la 3D
     cx.fillStyle = 'rgba(11,18,32,0.72)'; cx.fillRect(0, 0, 720, 86); // bandeau du haut
-    cx.fillStyle = '#FF6A2E'; cx.font = '800 46px ' + D; cx.fillText('FOULÉE', 24, 58); // le nom
-    cx.fillStyle = '#F2F5FA'; cx.textAlign = 'right'; cx.fillText(fr(m.cadence) + ' pas/min · ' + lastRun.g.score + '/100', 696, 58); cx.textAlign = 'left'; // les chiffres
+    cx.fillStyle = '#FF6A2E'; cx.font = '800 46px ' + D; cx.fillText(T('FOULÉE'), 24, 58); // le nom
+    cx.fillStyle = '#F2F5FA'; cx.textAlign = 'right'; cx.fillText(fr(m.cadence) + T(' pas/min · ') + lastRun.g.score + '/100', 696, 58); cx.textAlign = 'left'; // les chiffres
     cx.fillStyle = 'rgba(11,18,32,0.72)'; cx.fillRect(0, 664, 720, 56); cx.fillStyle = '#B8C3D6'; cx.font = '600 26px ' + D; // bandeau du bas
-    cx.fillText(D3.cari ? 'Caricature · orange : à surveiller · rouge : à travailler' : 'Mon double 3D', 24, 700); // légende (courte, pour tenir sur la largeur)
+    cx.fillText(D3.cari ? T('Caricature · orange : à surveiller · rouge : à travailler') : T('Mon double 3D'), 24, 700); // légende (courte, pour tenir sur la largeur)
   };
   const rec = new MediaRecorder(comp.captureStream(30), { mimeType: mime, videoBitsPerSecond: 4e6 }); // l'enregistreur
   const chunks = []; rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); }; // morceaux de vidéo
   rec.onstop = () => {                                     // fin de l'enregistrement
     D3.rec = null; recBlob = new Blob(chunks, { type: mime.split(';')[0] }); // la vidéo complète
     $('recOut').src = URL.createObjectURL(recBlob); $('recOut').hidden = false; $('recShare').hidden = false; // on la montre
-    $('rec').disabled = false; $('rec').textContent = 'Refaire ma vidéo'; $('recHint').textContent = 'Vidéo prête (' + Math.round(recBlob.size / 1024) + ' Ko).'; buzz([10, 40, 10]); // prêt
+    $('rec').disabled = false; $('rec').textContent = T('Refaire ma vidéo'); $('recHint').textContent = T('Vidéo prête (') + Math.round(recBlob.size / 1024) + T(' Ko).'); buzz([10, 40, 10]); // prêt
   };
   D3.rec = { draw }; draw(); rec.start(250);               // on commence
-  $('rec').disabled = true; $('recShare').hidden = true; $('recHint').textContent = 'Enregistrement… 6 secondes.'; // pendant l'enregistrement
+  $('rec').disabled = true; $('recShare').hidden = true; $('recHint').textContent = T('Enregistrement… 6 secondes.'); // pendant l'enregistrement
   setTimeout(() => { try { rec.stop(); } catch (e) {} }, 6000); // arrêt au bout de 6 s
 });
 $('recShare').addEventListener('click', async () => {      // « Partager la vidéo »
   if (!recBlob) return;                                    // rien à partager
-  try { await shareBlob(recBlob, 'foulee-double.' + (recBlob.type.includes('mp4') ? 'mp4' : 'webm'), 'Mon double Foulée'); } catch (e) { toast('Partage annulé.'); } // menu de partage
+  try { await shareBlob(recBlob, 'foulee-double.' + (recBlob.type.includes('mp4') ? 'mp4' : 'webm'), T('Mon double Foulée')); } catch (e) { toast(T('Partage annulé.')); } // menu de partage
 });
 
 // ---------- Son (partagé par le métronome et les bips du coach) ----------
@@ -1183,11 +1953,11 @@ async function stayAwake(on) {                             // allume / relâche 
 $('metroBtn').addEventListener('click', async () => {      // démarrer / arrêter
   if (metroOn) {                                           // arrêt
     metroOn = false; if (loopSrc) { try { loopSrc.stop(); } catch (e) {} loopSrc = null; } // on coupe le son
-    cancelAnimationFrame(rafId); $('beat').classList.remove('on'); $('metroBtn').textContent = 'Démarrer'; // voyant et bouton
+    cancelAnimationFrame(rafId); $('beat').classList.remove('on'); $('metroBtn').textContent = T('Démarrer'); // voyant et bouton
     stayAwake(false); return;                              // l'écran peut de nouveau s'éteindre
   }
   try { await metroCtx(); } catch (e) { return; }          // son autorisé après un toucher
-  metroOn = true; startLoop(); blink(); $('metroBtn').textContent = 'Arrêter'; buzz(10); // départ
+  metroOn = true; startLoop(); blink(); $('metroBtn').textContent = T('Arrêter'); buzz(10); // départ
   stayAwake(true);                                         // garder l'écran allumé
 });
 document.addEventListener('visibilitychange', () => {      // retour sur l'app
@@ -1222,56 +1992,56 @@ function onMotion(e) {                                     // une mesure du capt
 function say(text, kind) {                                 // annonce vocale (ou bips)
   if (!COACH.voice) { beepPattern(kind); return; }         // mode bips
   const tts = plugin('TextToSpeech');                      // voix native de l'app
-  if (tts) { tts.speak({ text, lang: 'fr-FR', rate: 1.05, pitch: 1, volume: 1, category: 'playback' }).catch(() => beepPattern(kind)); return; } // voix d'Android
-  if (window.speechSynthesis) { const u = new SpeechSynthesisUtterance(text); u.lang = 'fr-FR'; u.rate = 1.05; speechSynthesis.cancel(); speechSynthesis.speak(u); return; } // voix du navigateur
+  if (tts) { tts.speak({ text, lang: VOICE_LANG, rate: 1.05, pitch: 1, volume: 1, category: 'playback' }).catch(() => beepPattern(kind)); return; } // voix d'Android
+  if (window.speechSynthesis) { const u = new SpeechSynthesisUtterance(text); u.lang = VOICE_LANG; u.rate = 1.05; speechSynthesis.cancel(); speechSynthesis.speak(u); return; } // voix du navigateur
   beepPattern(kind);                                       // aucune voix : des bips
 }
 function updateCoach() {                                   // chaque seconde : affichage et conseils
   const t = performance.now() / 1000;                      // maintenant
-  if (t - COACH.started > 4 && COACH.lastEvt === 0) { $('liveMsg').textContent = 'Le capteur de mouvement ne répond pas sur cet appareil.'; return; } // pas de capteur
+  if (t - COACH.started > 4 && COACH.lastEvt === 0) { $('liveMsg').textContent = T('Le capteur de mouvement ne répond pas sur cet appareil.'); return; } // pas de capteur
   const fresh = t - COACH.lastStep < 2.5;                  // des pas récents ?
   COACH.spm = fresh && COACH.gaps.length >= 4 ? 60 / median(COACH.gaps) : NaN; // pas par minute (valeur du milieu des 12 derniers écarts)
   const spm = COACH.spm;                                   // raccourci
   $('liveSpm').textContent = Number.isFinite(spm) ? Math.round(spm) : '–'; // le grand chiffre
   $('gaugeMark').style.left = (Number.isFinite(spm) ? Math.max(0, Math.min(100, (spm - 140) / 60 * 100)) : 50) + '%'; // la jauge (140 → 200)
-  if (!Number.isFinite(spm)) { $('liveMsg').textContent = 'En attente de vos pas… (téléphone en poche ou au bras)'; return; } // pas encore de mesure
+  if (!Number.isFinite(spm)) { $('liveMsg').textContent = T('En attente de vos pas… (téléphone en poche ou au bras)'); return; } // pas encore de mesure
   const tol = bpm * 0.03, state = spm < bpm - tol ? 'up' : spm > bpm + tol ? 'down' : 'ok'; // en dessous, au-dessus ou dans la cible (± 3 %)
-  $('liveMsg').textContent = state === 'up' ? 'Petits pas plus rapides : visez ' + bpm + '.' : state === 'down' ? 'Un peu plus calme : visez ' + bpm + '.' : 'Parfait, gardez ce rythme.'; // conseil écrit
+  $('liveMsg').textContent = state === 'up' ? T('Petits pas plus rapides : visez ') + bpm + '.' : state === 'down' ? T('Un peu plus calme : visez ') + bpm + '.' : T('Parfait, gardez ce rythme.'); // conseil écrit
   const changed = state !== COACH.lastState, since = t - COACH.lastSay; // a-t-on changé d'état ? depuis quand on n'a rien dit ?
   if (changed && since > 8 || since > (state === 'ok' ? 60 : 20)) { // on parle quand ça change (pas trop souvent), sinon de temps en temps
-    say(state === 'up' ? 'Cadence ' + Math.round(spm) + '. Accélérez le rythme des pas.' : state === 'down' ? 'Cadence ' + Math.round(spm) + '. Ralentissez un peu le rythme.' : 'Cadence ' + Math.round(spm) + '. Parfait.', state); // l'annonce
+    say(state === 'up' ? T('Cadence ') + Math.round(spm) + T('. Accélérez le rythme des pas.') : state === 'down' ? T('Cadence ') + Math.round(spm) + T('. Ralentissez un peu le rythme.') : T('Cadence ') + Math.round(spm) + T('. Parfait.'), state); // l'annonce
     COACH.lastSay = t; COACH.lastState = state;            // on retient
   }
 }
 $('liveBtn').addEventListener('click', async () => {       // démarrer / arrêter le coach
   if (COACH.on) {                                          // arrêt
     COACH.on = false; window.removeEventListener('devicemotion', onMotion); clearInterval(COACH.timer); // on n'écoute plus le capteur
-    $('liveBtn').textContent = 'Démarrer le coach'; $('liveMsg').textContent = 'Coach arrêté.'; stayAwake(false); return; // bouton et écran
+    $('liveBtn').textContent = T('Démarrer le coach'); $('liveMsg').textContent = T('Coach arrêté.'); stayAwake(false); return; // bouton et écran
   }
-  try { if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function' && await DeviceMotionEvent.requestPermission() !== 'granted') { $('liveMsg').textContent = 'Autorisez l\'accès au capteur de mouvement pour utiliser le coach.'; return; } } catch (e) {} // iPhone : il faut demander la permission
+  try { if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function' && await DeviceMotionEvent.requestPermission() !== 'granted') { $('liveMsg').textContent = T('Autorisez l\'accès au capteur de mouvement pour utiliser le coach.'); return; } } catch (e) {} // iPhone : il faut demander la permission
   try { await metroCtx(); } catch (e) {}                   // son prêt (pour les bips)
   Object.assign(COACH, { on: true, gaps: [], lastStep: -1, lastEvt: 0, lastSay: performance.now() / 1000, lastState: 'ok', started: performance.now() / 1000, env: 3, prev: 0 }); // remise à zéro
   window.addEventListener('devicemotion', onMotion);       // on écoute le capteur
   COACH.timer = setInterval(updateCoach, 1000);            // mise à jour chaque seconde
-  $('liveBtn').textContent = 'Arrêter le coach'; $('liveMsg').textContent = 'C\'est parti : courez, je compte vos pas.'; buzz(10); // bouton
-  say('Coach démarré. Cible : ' + bpm + ' pas par minute.', 'ok'); stayAwake(true); // annonce et écran allumé
+  $('liveBtn').textContent = T('Arrêter le coach'); $('liveMsg').textContent = T('C\'est parti : courez, je compte vos pas.'); buzz(10); // bouton
+  say(T('Coach démarré. Cible : ') + bpm + T(' pas par minute.'), 'ok'); stayAwake(true); // annonce et écran allumé
 });
 document.querySelectorAll('[data-voice]').forEach(b => b.addEventListener('click', () => { COACH.voice = b.dataset.voice === '1'; document.querySelectorAll('[data-voice]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); buzz(6); })); // voix ou bips
 
 // ---------- Progrès : historique et comparaison avant / après ----------
-const fmtDate = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); // format de date
+const fmtDate = new Intl.DateTimeFormat(LOCALE, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); // format de date
 function renderHist() {
   const h = loadHist();                                    // les analyses gardées
-  $('hist').innerHTML = h.length ? h.map((x, i) => '<li>' + (x.thumb ? '<img alt="" src="' + esc(x.thumb) + '">' : '') + '<div><b>' + fmtDate.format(new Date(x.d)) + '</b><br><span class="small muted">' +
-    (Number.isFinite(x.m.cadence) ? Math.round(x.m.cadence) : '–') + ' pas/min · tibia ' + (Number.isFinite(x.m.shin) ? Math.round(x.m.shin) + '°' : '–') + (x.foot ? ' · ' + FOOT_TXT[x.foot] : '') + '</span>' +
-    '<div class="acts"><label><input type="checkbox" data-cmp="' + i + '">Comparer</label><button type="button" data-del="' + i + '">Supprimer</button></div></div><span class="hs">' + esc(x.score) + '</span></li>').join('') // une ligne par analyse
-    : '<li><span class="small muted">Vos analyses apparaîtront ici, pour suivre vos progrès (elles restent dans ce téléphone).</span></li>'; // état vide
+  $('hist').innerHTML = h.length ? h.map((x, i) => '<li>' + (x.thumb ? T('<img alt="" src="') + esc(x.thumb) + '">' : '') + '<div><b>' + fmtDate.format(new Date(x.d)) + '</b><br><span class="small muted">' +
+    (Number.isFinite(x.m.cadence) ? Math.round(x.m.cadence) : '–') + T(' pas/min · tibia ') + (Number.isFinite(x.m.shin) ? Math.round(x.m.shin) + '°' : '–') + (x.foot ? ' · ' + FOOT_TXT[x.foot] : '') + '</span>' +
+    T('<div class="acts"><label><input type="checkbox" data-cmp="') + i + T('">Comparer</label><button type="button" data-del="') + i + T('">Supprimer</button></div></div><span class="hs">') + esc(x.score) + '</span></li>').join('') // une ligne par analyse
+    : T('<li><span class="small muted">Vos analyses apparaîtront ici, pour suivre vos progrès (elles restent dans ce téléphone).</span></li>'); // état vide
   $('cmpBox').hidden = true;                               // pas de comparaison tant qu'on n'a pas coché
 }
 $('hist').addEventListener('click', e => {                 // supprimer une analyse
   const i = e.target.dataset && e.target.dataset.del;      // laquelle ?
   if (i === undefined) return;                             // clic ailleurs
-  if (!confirm('Supprimer cette analyse ?')) return;       // confirmation
+  if (!confirm(T('Supprimer cette analyse ?'))) return;       // confirmation
   const h = loadHist(); h.splice(Number(i), 1); saveHist(h); renderHist(); // on la retire
 });
 $('hist').addEventListener('change', e => {                // une case « Comparer » cochée ou décochée
@@ -1294,22 +2064,22 @@ function compare(i, j) {                                   // superpose deux sil
     drawSkeleton(c, lm, cv.width, cv.height, k.near, color); return true; // le squelette
   };
   const a = draw(older.key, 'rgba(140,150,170,0.9)'), b = draw(newer.key, css('--lane')); // grise : avant ; bleue : après
-  if (!a || !b) { c.fillStyle = css('--muted'); c.font = '600 18px ' + css('--body'); c.fillText('Silhouette indisponible pour une analyse de l\'ancienne version.', 16, 30); } // vieille analyse
-  const rows = [['Score', 'score', null]].concat(['cadence', 'shin', 'knee', 'trunk', 'osc', 'elbow'].map(k => [INFO[k].name, k, INFO[k]])); // lignes du tableau
-  $('cmpTable').innerHTML = '<tr><th>Repère</th><th>Avant</th><th>Après</th><th>Écart</th></tr>' + rows.map(([name, k, info]) => { // une ligne par repère
+  if (!a || !b) { c.fillStyle = css('--muted'); c.font = '600 18px ' + css('--body'); c.fillText(T('Silhouette indisponible pour une analyse de l\'ancienne version.'), 16, 30); } // vieille analyse
+  const rows = [[T('Score'), 'score', null]].concat(['cadence', 'shin', 'knee', 'trunk', 'osc', 'elbow', 'asym'].map(k => [INFO[k].name, k, INFO[k]])); // lignes du tableau
+  $('cmpTable').innerHTML = T('<tr><th>Repère</th><th>Avant</th><th>Après</th><th>Écart</th></tr>') + rows.map(([name, k, info]) => { // une ligne par repère
     const o = k === 'score' ? older.score : older.m[k], n = k === 'score' ? newer.score : newer.m[k]; // les deux valeurs
     if (!Number.isFinite(o) || !Number.isFinite(n)) return ''; // valeur manquante : pas de ligne
-    const f = info ? info.fmt : v => fr(v), d = /^0(,0+)?$/.test(f(Math.abs(n - o))) ? 0 : n - o; // format et écart (0 si l'écart arrondi est nul)
+    const f = info ? info.fmt : v => fr(v), d = /^0([.,]0+)?$/.test(f(Math.abs(n - o))) ? 0 : n - o; // format et écart (0 si l'écart arrondi est nul)
     const better = k === 'score' ? d > 0 : Math.abs(n - info.center) < Math.abs(o - info.center); // mieux = plus proche de l'idéal
-    const cls = Math.abs(d) < (k === 'osc' ? 0.005 : 1) ? '' : better ? 'up' : 'down'; // couleur (rien si l'écart est minuscule)
+    const cls = Math.abs(d) < (k === 'osc' ? 0.005 : k === 'asym' ? 2 : 1) ? '' : better ? 'up' : 'down'; // couleur (rien si l'écart est minuscule)
     return '<tr><td>' + name + '</td><td>' + f(o) + '</td><td>' + f(n) + '</td><td class="' + cls + '">' + (d > 0 ? '+' : d < 0 ? '−' : '') + f(Math.abs(d)) + (cls === 'up' ? ' ▲' : cls === 'down' ? ' ▼' : '') + '</td></tr>'; // la ligne
   }).join('');
   $('cmpBox').hidden = false; $('cmpBox').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' }); // on montre la comparaison
 }
 
 // ---------- Boutons principaux ----------
-function showWork(text, frac) { $('work').hidden = false; $('err').hidden = true; $('workText').textContent = text; $('bar').style.width = Math.round(frac * 100) + '%'; $('pick').setAttribute('aria-disabled', 'true'); $('pick2').setAttribute('aria-disabled', 'true'); $('file').disabled = true; $('fileCam').disabled = true; $('demo').disabled = true; } // affichage pendant l'analyse
-function hideWork() { $('work').hidden = true; $('pick').removeAttribute('aria-disabled'); $('pick2').removeAttribute('aria-disabled'); $('file').disabled = false; $('fileCam').disabled = false; $('demo').disabled = false; } // fin de l'analyse
+function showWork(text, frac) { $('liveCam').disabled = true; $('work').hidden = false; $('err').hidden = true; $('workText').textContent = text; $('bar').style.width = Math.round(frac * 100) + '%'; $('pick').setAttribute('aria-disabled', 'true'); $('pick2').setAttribute('aria-disabled', 'true'); $('file').disabled = true; $('fileCam').disabled = true; $('demo').disabled = true; } // affichage pendant l'analyse
+function hideWork() { $('liveCam').disabled = false; $('work').hidden = true; $('pick').removeAttribute('aria-disabled'); $('pick2').removeAttribute('aria-disabled'); $('file').disabled = false; $('fileCam').disabled = false; $('demo').disabled = false; } // fin de l'analyse
 // les boutons « Filmer » et « Choisir » sont des étiquettes reliées aux champs de fichier : le toucher ouvre directement la caméra ou la galerie
 const onPick = async e => {                                // une vidéo a été choisie (filmée ou prise dans la galerie)
   const f = e.target.files && e.target.files[0]; e.target.value = ''; // le fichier (et on permet de rechoisir le même)
@@ -1319,7 +2089,7 @@ const onPick = async e => {                                // une vidéo a été
     hideWork();                                            // on arrête l'attente
     if (err.message === 'stopped') return;                 // arrêt volontaire : rien à dire
     $('err').hidden = false;                               // message d'erreur
-    $('err').textContent = err.message === 'video' ? 'Cette vidéo ne peut pas être lue par le téléphone. Essayez une vidéo filmée avec l\'appareil photo (format MP4 ou MOV).' : err.message === 'noAI' ? 'L\'IA n\'a pas pu démarrer sur cet appareil.' : 'L\'analyse a échoué. Réessayez avec une vidéo plus courte (10 secondes).'; // explication simple
+    $('err').textContent = err.message === 'video' ? T('Cette vidéo ne peut pas être lue par le téléphone. Essayez une vidéo filmée avec l\'appareil photo (format MP4 ou MOV).') : err.message === 'noAI' ? T('L\'IA n\'a pas pu démarrer sur cet appareil.') : T('L\'analyse a échoué. Réessayez avec une vidéo plus courte (10 secondes).'); // explication simple
   }
 };
 $('file').addEventListener('change', onPick);              // vidéo de la galerie
@@ -1328,6 +2098,274 @@ $('stop').addEventListener('click', () => { stopAsked = true; }); // arrêter l'
 $('demo').addEventListener('click', runDemo);              // l'exemple
 renderHist();                                              // l'historique au démarrage
 setBpm(170);                                               // tempo de départ
+
+// ===================== FOULÉE v3 : NOUVEAUX OUTILS =====================
+// Métaphore : la v2 était un entraîneur qui regarde une vidéo. La v3 lui donne un assistant caméraman (le cadrage en direct),
+// une table de montage (revoir la vidéo image par image) et un carnet de progrès avec une courbe et une sauvegarde.
+
+// ---------- 1. Fiabilité et nouvelles tuiles ----------
+const CONF_TXT = { high: 'Fiabilité élevée', med: 'Fiabilité moyenne', low: 'Fiabilité faible' }; // trois niveaux de confiance
+function confHtml(res, k) {                                // petite pastille « ●●○ Fiabilité moyenne »
+  const c = res.conf && res.conf[k];                       // niveau de confiance de cette mesure
+  if (!c) return '';                                       // inconnu : rien
+  return '<span class="conf ' + c + '"><i></i><i></i><i></i>' + T(CONF_TXT[c]) + '</span>'; // trois points + texte (lisible sans couleurs)
+}
+function extraTiles(res, g) {                              // tuiles ajoutées par la v3
+  const m = res.metrics, out = [];                         // mesures et tuiles
+  const why = txt => '<details class="why"><summary>' + T('Pourquoi c\'est important') + '</summary><p>' + txt + '</p></details>'; // bloc « Pourquoi »
+  if (Number.isFinite(m.gct)) out.push('<div class="tile"><div class="tile-top"><span class="tile-name">' + T('Contact au sol') + '</span><span class="chip info">' + T('Information') + '</span></div>' + // temps de contact
+    '<div class="tile-val">' + fr(m.gct) + ' <small>ms</small></div>' +
+    (Number.isFinite(m.flight) ? '<span class="pm">' + T('Temps de vol : ') + fr(m.flight) + ' ms</span>' : '') + confHtml(res, 'gct') +
+    why(T('Temps pendant lequel le pied reste au sol à chaque pas. Il diminue quand on court plus vite : environ 250 à 300 ms en footing, moins de 200 ms chez les coureurs rapides. Le temps de vol, c\'est le moment où les deux pieds sont en l\'air. À 30 images par seconde, une image dure 33 ms : filmez à 60 images/s pour plus de précision.')) + '</div>');
+  if (Number.isFinite(m.asym) && Number.isFinite(m.leftPct)) { // équilibre gauche / droite
+    const L = Math.max(0, Math.min(100, m.leftPct)), c = g.colors.asym; // part du pied gauche et couleur
+    out.push('<div class="tile wide"><div class="tile-top"><span class="tile-name">' + T('Équilibre gauche / droite') + '</span><span class="chip ' + c + '">' + COLOR_TXT[c] + '</span></div>' +
+      '<div class="tile-val">' + fr(Math.abs(m.asym), 1) + ' <small>' + T('% d\'écart entre les pas') + '</small></div>' +
+      '<div class="balance" aria-hidden="true"><b style="width:' + L + '%"></b><s style="width:' + (100 - L) + '%"></s></div>' + // barre : bleu = gauche, orange = droite
+      '<div class="balance-labels"><span>' + T('Gauche') + ' ' + fr(L, 1) + ' %</span><span>' + T('Droite') + ' ' + fr(100 - L, 1) + ' %</span></div>' + confHtml(res, 'asym') +
+      why(T('Compare la durée des pas qui se terminent sur le pied gauche et sur le pied droit. Un petit écart (moins de 4 %) est normal. Un écart plus grand et durable peut venir d\'une gêne, d\'une ancienne blessure ou d\'une différence de force entre les jambes. Le pied le plus loin de la caméra est parfois caché : confirmez sur plusieurs vidéos avant de conclure.')) + '</div>');
+  }
+  return out;                                              // les nouvelles tuiles
+}
+
+// ---------- 2. Revoir ma vidéo, avec le squelette, image par image ----------
+// Métaphore : une table de montage. La vidéo défile ; on pose dessus, au bon instant, le squelette que l'IA a trouvé.
+const RP = { on: false, frames: null, start: 0, step: 1 / 30, near: 'L', end: 0, near_c: [], far_c: [], raf: 0 }; // état du lecteur
+function setupReplay(ctx, res) {                           // prépare le lecteur après une analyse
+  const box = $('replayBox'), v = $('rpVid');              // la zone et la vidéo
+  v.pause(); cancelAnimationFrame(RP.raf);                 // on arrête l'éventuelle lecture précédente
+  if (ctx.kind !== 'video' || !ctx.url || !ctx.frames) { box.hidden = true; v.removeAttribute('src'); return; } // seulement pour une vraie vidéo
+  const F = ctx.frames, vtAt = c => { const i = Math.max(0, Math.min(F.length - 1, Math.floor(c))), j = Math.min(F.length - 1, i + 1); return F[i].vt + (F[j].vt - F[i].vt) * (c - i); }; // instant dans la vidéo d'une image (même entre deux)
+  Object.assign(RP, { frames: F, start: F[0].vt, step: ctx.step, near: res.near, end: F[F.length - 1].vt, near_c: res.contacts.map(vtAt), far_c: res.otherContacts.map(vtAt) }); // ce qu'il faut pour rejouer (les contacts sont convertis en secondes de vidéo)
+  box.hidden = false;                                      // la zone apparaît
+  v.src = ctx.url; v.playbackRate = 0.25;                  // la vidéo, au ralenti par défaut
+  v.onloadedmetadata = () => { const c = $('rpOv'); c.width = 640; c.height = Math.round(640 * v.videoHeight / v.videoWidth); v.currentTime = F[Math.max(0, res.keyFrame)].vt; }; // calque à la taille de la vidéo, et on se place sur l'image du contact
+  v.onseeked = () => rpDraw();                             // image changée (pas à pas) : on redessine
+  const line = $('rpLine'); line.querySelectorAll('.ev').forEach(e => e.remove()); // repères de la frise
+  const span = Math.max(1e-6, RP.end - RP.start);          // durée analysée
+  const mark = (t, cls) => { const e = document.createElement('i'); e.className = 'ev' + cls; e.style.left = ((t - RP.start) / span * 100) + '%'; line.appendChild(e); }; // un repère
+  RP.near_c.forEach(c => mark(c, '')); RP.far_c.forEach(c => mark(c, ' far')); // orange : pied visible ; bleu : l'autre pied
+  $('rpPlay').textContent = T('Lecture');                  // bouton
+}
+function rpDraw() {                                        // dessine le squelette au bon instant de la vidéo
+  const v = $('rpVid'), c = $('rpOv'), x = c.getContext('2d'); // vidéo, calque, pinceau
+  x.clearRect(0, 0, c.width, c.height);                    // calque vierge
+  if (!RP.frames) return;                                  // rien à dessiner
+  const F = RP.frames, t = v.currentTime; let lo = 0, hi = F.length - 1; // recherche de l'image analysée la plus proche (par dichotomie)
+  while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (F[mid].vt <= t) lo = mid; else hi = mid; } // on coupe la liste en deux à chaque fois
+  const k = F.length < 2 ? 0 : lo + Math.max(0, Math.min(1, (t - F[lo].vt) / Math.max(1e-6, F[hi].vt - F[lo].vt))); // position (peut tomber entre deux images)
+  const i0 = Math.max(0, Math.min(RP.frames.length - 1, Math.floor(k))), i1 = Math.min(RP.frames.length - 1, i0 + 1), w = Math.max(0, Math.min(1, k - i0)); // les deux images autour, et le poids
+  const a = RP.frames[i0].lm, b = RP.frames[i1].lm;        // leurs 33 points
+  const lm = a && b ? a.map((p, j) => ({ x: p.x + (b[j].x - p.x) * w, y: p.y + (b[j].y - p.y) * w })) : (a || b); // squelette à l'instant exact
+  if (lm) drawSkeleton(x, lm, c.width, c.height, RP.near); // on le dessine
+  const hit = RP.near_c.some(cc => Math.abs(cc - t) < RP.step * 0.6); // le pied visible touche-t-il le sol à cet instant ?
+  if (hit && lm) { const S = SIDE[RP.near], f = lm[S.heel], t = lm[S.toe]; x.fillStyle = 'rgba(255,106,46,0.85)'; x.beginPath(); x.arc((f.x + t.x) / 2 * c.width, (f.y + t.y) / 2 * c.height, c.width / 40, 0, 2 * Math.PI); x.fill(); } // flash orange sous le pied
+  $('rpHead').style.left = Math.max(0, Math.min(100, (v.currentTime - RP.start) / Math.max(1e-6, RP.end - RP.start) * 100)) + '%'; // tête de lecture sur la frise
+}
+function rpLoop() {                                        // pendant la lecture : on redessine à chaque image
+  const v = $('rpVid');                                    // la vidéo
+  if (v.currentTime >= RP.end) v.currentTime = RP.start;   // on boucle sur la partie analysée
+  rpDraw();                                                // le squelette
+  if (!v.paused) RP.raf = requestAnimationFrame(rpLoop);   // image suivante
+}
+$('rpPlay').addEventListener('click', () => {              // Lecture / Pause
+  const v = $('rpVid');                                    // la vidéo
+  if (v.paused) { if (v.currentTime >= RP.end - 0.01 || v.currentTime < RP.start) v.currentTime = RP.start; v.play().then(() => { $('rpPlay').textContent = T('Pause'); RP.raf = requestAnimationFrame(rpLoop); }).catch(() => {}); } // lecture
+  else { v.pause(); $('rpPlay').textContent = T('Lecture'); rpDraw(); } // pause
+});
+const rpStep = d => { const v = $('rpVid'); v.pause(); $('rpPlay').textContent = T('Lecture'); v.currentTime = Math.max(RP.start, Math.min(RP.end, v.currentTime + d * RP.step)); buzz(4); }; // une image en avant / en arrière
+$('rpPrev').addEventListener('click', () => rpStep(-1));   // image précédente
+$('rpNext').addEventListener('click', () => rpStep(1));    // image suivante
+document.querySelectorAll('[data-rps]').forEach(b => b.addEventListener('click', () => { $('rpVid').playbackRate = Number(b.dataset.rps); document.querySelectorAll('[data-rps]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); buzz(6); })); // vitesse ×1 ou ×¼
+$('rpLine').addEventListener('pointerdown', e => {         // toucher la frise : on saute à cet instant
+  const r = $('rpLine').getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); // position du doigt (0 → 1)
+  const v = $('rpVid'); v.pause(); $('rpPlay').textContent = T('Lecture'); v.currentTime = RP.start + f * (RP.end - RP.start); // on s'y place
+});
+
+// ---------- 3. Assistant de tournage en direct ----------
+// Métaphore : un caméraman expérimenté à côté de vous. Il regarde l'écran avec l'IA et dit « recule », « mets-toi de profil »,
+// « redresse le téléphone »… Quand tout est vert, il filme 12 secondes, puis passe la vidéo à l'entraîneur.
+const CAM = { stream: null, facing: 'environment', on: false, loop: null, recording: false, hist: [], roll: NaN, rollAt: 0 }; // état de l'assistant
+const CHECKS = ['body', 'side', 'size', 'light', 'level'];  // les 5 vérifications
+const camGrab = document.createElement('canvas');          // petite copie de l'image de la caméra (pour l'IA et la lumière)
+function camMsg(t) { $('camMsg').textContent = t; }        // message en bas de l'écran
+function onCamMotion(e) {                                  // le capteur dit comment le téléphone est tenu (niveau à bulle)
+  const a = e.accelerationIncludingGravity;                // la pesanteur vue par le téléphone
+  if (!a || !Number.isFinite(a.x) || !Number.isFinite(a.y)) return; // capteur muet
+  const ang = (screen.orientation && Number.isFinite(screen.orientation.angle)) ? screen.orientation.angle : (window.orientation || 0); // rotation de l'écran (0 = portrait, 90 = paysage)
+  let r = Math.atan2(a.x, a.y) * 180 / Math.PI - ang;      // inclinaison du téléphone dans le plan de l'écran
+  r = ((r + 540) % 360) - 180;                             // ramenée entre −180° et 180°
+  CAM.roll = Number.isFinite(CAM.roll) ? CAM.roll + 0.2 * (r - CAM.roll) : r; // lissée (la main tremble)
+  CAM.rollAt = performance.now();                          // dernière mesure
+}
+async function camStart() {                                // allume la caméra
+  if (CAM.stream) CAM.stream.getTracks().forEach(t => t.stop()); // on éteint l'ancienne (changement de caméra)
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('nocam'); // pas de caméra accessible ici
+  CAM.stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: CAM.facing }, width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 60 } } }); // caméra, 60 images/s si possible
+  const v = $('camVid'); v.srcObject = CAM.stream; v.style.transform = CAM.facing === 'user' ? 'scaleX(-1)' : ''; $('camOv').style.transform = v.style.transform; // caméra avant : effet miroir
+  await v.play();                                          // l'image s'affiche
+}
+async function camOpen() {                                 // ouvre l'assistant
+  $('cam').hidden = false; document.body.style.overflow = 'hidden'; camMsg(T('Démarrage de la caméra…')); // plein écran
+  CAM.hist = []; CAM.roll = NaN; CAM.on = true;            // remise à zéro
+  $('camRec').setAttribute('aria-disabled', 'true'); $('camCount').textContent = ''; $('camRec').classList.remove('on'); // bouton d'enregistrement (en attente)
+  window.addEventListener('devicemotion', onCamMotion);    // niveau à bulle
+  stayAwake(true);                                         // l'écran reste allumé
+  try { await camStart(); }                                // la caméra
+  catch (e) { camMsg(e && e.name === 'NotAllowedError' ? T('Autorisez l\'accès à la caméra pour utiliser l\'assistant (réglages du téléphone).') : T('Caméra indisponible ici. Utilisez « Choisir une vidéo » ou l\'appareil photo du téléphone.')); return; } // refusée ou absente
+  $('camRec').removeAttribute('aria-disabled');            // on peut enregistrer
+  camMsg(T('Chargement de l\'IA…'));                       // l'IA se prépare
+  try { await getPose(); } catch (e) { camMsg(T('L\'IA n\'a pas pu démarrer : vous pouvez quand même filmer.')); return; } // l'IA (déjà chargée si une analyse a eu lieu)
+  CAM.loop = camLoop();                                    // on lance la surveillance du cadrage
+}
+async function camClose() {                                // ferme l'assistant
+  CAM.on = false;                                          // la surveillance s'arrête…
+  if (CAM.loop) { try { await CAM.loop; } catch (e) {} CAM.loop = null; } // …on attend qu'elle ait fini (l'IA ne doit pas servir à deux choses à la fois)
+  if (CAM.rec && CAM.rec.state === 'recording') { CAM.cancelled = true; CAM.rec.stop(); } // enregistrement en cours : annulé
+  if (CAM.stream) { CAM.stream.getTracks().forEach(t => t.stop()); CAM.stream = null; } // caméra éteinte
+  $('camVid').srcObject = null; window.removeEventListener('devicemotion', onCamMotion); // plus de caméra ni de capteur
+  $('cam').hidden = true; document.body.style.overflow = ''; stayAwake(false); // on revient à l'app
+}
+function camEvaluate(lm, W, H, luma) {                     // juge le cadrage d'une image : 5 feux vert / rouge
+  const res = { body: false, side: false, size: false, light: luma >= 55, level: true, hint: '' }; // par défaut
+  const landscape = W > H;                                 // l'image est-elle en largeur ? (indispensable pour filmer une foulée de profil)
+  const rollOk = !Number.isFinite(CAM.roll) || performance.now() - CAM.rollAt > 1500 || Math.abs(CAM.roll) <= 3; // niveau : bon (ou capteur absent)
+  res.level = rollOk && landscape;                         // feu du niveau : téléphone à l'horizontale et droit
+  if (!lm) { res.hint = T('Je ne vois personne : placez le coureur dans l\'image.'); return res; } // personne
+  const vis = s => ['hip', 'knee', 'ank', 'heel', 'toe'].reduce((a, k) => a + (lm[SIDE[s][k]].visibility || 0), 0); // visibilité d'une jambe
+  const S = SIDE[vis('L') >= vis('R') ? 'L' : 'R'];        // la jambe la mieux vue
+  const inside = p => p.x > 0.01 && p.x < 0.99 && p.y > 0.01 && p.y < 0.99; // point dans l'image ?
+  res.body = [lm[0], lm[S.heel], lm[S.toe], lm[S.ank]].every(p => inside(p) && (p.visibility ?? 1) > 0.5); // tête et pied visibles en entier
+  const top = lm[0].y, bottom = Math.max(lm[S.heel].y, lm[S.toe].y), h = bottom - top; // hauteur du corps dans l'image (0 → 1)
+  res.size = h >= 0.45 && h <= 0.9;                        // ni trop petit, ni coupé
+  const leg = Math.hypot((lm[S.hip].x - lm[S.knee].x) * W, (lm[S.hip].y - lm[S.knee].y) * H) + Math.hypot((lm[S.knee].x - lm[S.ank].x) * W, (lm[S.knee].y - lm[S.ank].y) * H); // longueur de jambe (pixels)
+  res.side = leg > 0 && Math.abs(lm[11].x - lm[12].x) * W / leg <= 0.45; // épaules presque l'une derrière l'autre = de profil
+  res.hint = !res.body ? T('Tout le corps doit être visible, pieds compris.') : h < 0.45 ? T('Rapprochez-vous un peu.') : h > 0.9 ? T('Reculez un peu.') : !res.side ? T('Placez-vous exactement sur le côté du coureur.') : !res.light ? T('Il faut plus de lumière.') : !landscape ? T('Tournez le téléphone à l\'horizontale.') : !res.level ? T('Redressez le téléphone (gardez la ligne verte à plat).') : T('Parfait ! Appuyez sur le bouton rouge.'); // le conseil le plus utile d'abord
+  return res;                                              // les 5 feux
+}
+async function camLoop() {                                 // surveillance du cadrage (tant que l'assistant est ouvert)
+  const v = $('camVid'), ov = $('camOv'), ox = ov.getContext('2d'); // vidéo, calque et pinceau
+  const gx = camGrab.getContext('2d', { willReadFrequently: true }); // pinceau de copie
+  pose.reset();                                            // l'IA oublie la vidéo précédente
+  while (CAM.on) {                                         // en boucle
+    if (CAM.recording || !(v.videoWidth > 0)) { await new Promise(r => setTimeout(r, 120)); continue; } // pendant l'enregistrement, l'IA se repose (le téléphone garde sa puissance pour filmer)
+    const W = v.videoWidth, H = v.videoHeight, sc = Math.min(1, 480 / Math.max(W, H)); // taille de la caméra et réduction
+    camGrab.width = Math.round(W * sc); camGrab.height = Math.round(H * sc); // petite copie
+    gx.drawImage(v, 0, 0, camGrab.width, camGrab.height);  // on copie l'image
+    const px = gx.getImageData(0, 0, camGrab.width, camGrab.height).data; let sum = 0, n = 0; // lumière moyenne…
+    for (let i = 0; i < px.length; i += 64) { sum += 0.299 * px[i] + 0.587 * px[i + 1] + 0.114 * px[i + 2]; n++; } // …sur un pixel sur 16
+    const r = await detect(camGrab);                       // l'IA cherche le corps
+    if (!CAM.on) break;                                    // fermé entre-temps
+    const lm = r.poseLandmarks || null;                    // les 33 points (ou rien)
+    const ev = camEvaluate(lm, W, H, sum / Math.max(1, n)); // les 5 feux
+    CAM.hist.push(ev); if (CAM.hist.length > 8) CAM.hist.shift(); // on garde les 8 dernières images
+    for (const k of CHECKS) { const ok = k === 'level' ? ev.level : CAM.hist.filter(e => e[k]).length >= Math.ceil(CAM.hist.length / 2); $('ck-' + k).classList.toggle('ok', ok); } // feu vert s'il est vert sur la majorité des images récentes (pas de clignotement) ; le niveau, lui, réagit tout de suite
+    if (!CAM.recording && !CAM.counting) camMsg(ev.hint);  // le conseil
+    const rect = ov.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1); // taille du calque à l'écran
+    ov.width = Math.round(rect.width * dpr); ov.height = Math.round(rect.height * dpr); // calque net
+    const s = Math.min(ov.width / W, ov.height / H), offX = (ov.width - W * s) / 2, offY = (ov.height - H * s) / 2; // où l'image est affichée (bandes noires éventuelles)
+    if (lm) drawSkeleton(ox, lm.map(p => ({ x: (offX + p.x * W * s) / ov.width, y: (offY + p.y * H * s) / ov.height, visibility: p.visibility })), ov.width, ov.height, null, CHECKS.every(k => $('ck-' + k).classList.contains('ok')) ? '#45D18B' : '#7D9BFF'); // squelette (vert quand tout va bien)
+    const lvl = $('camLevel');                             // niveau à bulle
+    lvl.hidden = !Number.isFinite(CAM.roll);               // caché sans capteur
+    if (Number.isFinite(CAM.roll)) { $('camLevelLine').style.transform = 'rotate(' + (-CAM.roll).toFixed(1) + 'deg)'; lvl.classList.toggle('ok', Math.abs(CAM.roll) <= 3); } // la ligne reste à l'horizontale réelle
+    await new Promise(r => requestAnimationFrame(r));      // on laisse respirer l'écran
+  }
+  ox.clearRect(0, 0, ov.width, ov.height);                 // calque vidé en sortant
+}
+function camPickMime() {                                   // format d'enregistrement de la caméra
+  if (typeof MediaRecorder === 'undefined') return null;   // pas d'enregistreur
+  for (const t of ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm']) if (MediaRecorder.isTypeSupported(t)) return t; // le premier qui marche
+  return null;                                             // aucun
+}
+async function camRecord() {                               // compte à rebours, puis 12 secondes d'enregistrement
+  if (!CAM.stream || CAM.recording || CAM.counting || $('camRec').getAttribute('aria-disabled') === 'true') return; // pas prêt ou déjà en cours
+  const mime = camPickMime();                              // format
+  if (!mime) { camMsg(T('Ce téléphone ne sait pas enregistrer de vidéo depuis l\'app.')); return; } // impossible
+  try { await metroCtx(); } catch (e) {}                   // son prêt (bips du compte à rebours)
+  CAM.counting = true;                                     // compte à rebours
+  for (let i = 3; i >= 1; i--) {                           // 3, 2, 1…
+    if (!CAM.on) { CAM.counting = false; return; }         // fermé pendant le compte
+    $('camCount').textContent = i; camMsg(T('Le coureur démarre… ') + i); if (actx) tone(880, actx.currentTime + 0.01, 0.12, 0.4); buzz(30); // chiffre, bip, vibration
+    await new Promise(r => setTimeout(r, 1000));           // une seconde
+  }
+  CAM.counting = false; if (!CAM.on) return;               // fermé pendant le compte
+  const track = CAM.stream.getVideoTracks()[0], fps = (track && track.getSettings && track.getSettings().frameRate) || 30; // cadence réelle de la caméra
+  const chunks = []; CAM.cancelled = false;                // morceaux de vidéo
+  CAM.rec = new MediaRecorder(CAM.stream, { mimeType: mime, videoBitsPerSecond: 8e6 }); // l'enregistreur (bonne qualité)
+  CAM.rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); }; // morceaux reçus
+  const done = new Promise(r => { CAM.rec.onstop = r; });  // fin de l'enregistrement
+  CAM.recording = true; CAM.rec.start(500);                // c'est parti
+  if (actx) tone(1320, actx.currentTime + 0.01, 0.25, 0.5); // bip aigu : on filme
+  $('camRec').classList.add('on'); const t0 = performance.now(); // bouton « en cours »
+  const tick = setInterval(() => { const left = Math.max(0, 12 - Math.floor((performance.now() - t0) / 1000)); $('camCount').textContent = left; camMsg(T('Enregistrement… courez naturellement.')); }, 250); // secondes restantes
+  await new Promise(r => setTimeout(r, 12000));            // 12 secondes
+  clearInterval(tick); if (CAM.rec.state === 'recording') CAM.rec.stop(); await done; // arrêt
+  CAM.recording = false; $('camRec').classList.remove('on'); $('camCount').textContent = ''; // bouton normal
+  if (CAM.cancelled) return;                               // fermé pendant l'enregistrement : on ne fait rien
+  if (actx) { tone(1320, actx.currentTime + 0.01, 0.12, 0.4); tone(1760, actx.currentTime + 0.16, 0.18, 0.4); } buzz([10, 40, 10]); // double bip : terminé
+  const blob = new Blob(chunks, { type: mime.split(';')[0] }); // la vidéo
+  await camClose();                                        // on ferme l'assistant
+  const file = new File([blob], 'foulee-' + Date.now() + (blob.type.includes('mp4') ? '.mp4' : '.webm'), { type: blob.type }); // un fichier, comme si on l'avait choisi
+  try { await analyzeVideo(file, { fps }); }               // analyse avec la vraie cadence de la caméra
+  catch (err) { hideWork(); if (err.message !== 'stopped') { $('err').hidden = false; $('err').textContent = T('L\'analyse a échoué. Réessayez avec une vidéo plus courte (10 secondes).'); } } // problème
+}
+$('liveCam').addEventListener('click', camOpen);           // « Filmer avec l'assistant »
+$('camClose').addEventListener('click', camClose);         // ✕
+$('camRec').addEventListener('click', camRecord);          // bouton rouge
+$('camFlip').addEventListener('click', async () => {       // caméra avant / arrière
+  if (CAM.recording || CAM.counting) return;               // pas pendant l'enregistrement
+  CAM.facing = CAM.facing === 'environment' ? 'user' : 'environment'; CAM.hist = []; // on change
+  try { await camStart(); } catch (e) { camMsg(T('Caméra indisponible ici. Utilisez « Choisir une vidéo » ou l\'appareil photo du téléphone.')); } // nouvelle caméra
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('cam').hidden) camClose(); }); // touche Échap : on ferme
+
+// ---------- 4. Courbes de progrès ----------
+function sparkFigure(title, pts, fmt, zone, lo, hi) {      // une petite courbe (SVG) avec la zone idéale en vert
+  const W = 300, H = 70, n = pts.length;                   // taille du dessin et nombre de points
+  const X = i => n === 1 ? W / 2 : i / (n - 1) * W, Y = v => H - (v - lo) / (hi - lo) * H; // position de chaque point
+  const line = pts.map((p, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(p.v).toFixed(1)).join(' '); // la ligne
+  const area = line + ' L' + X(n - 1).toFixed(1) + ' ' + H + ' L' + X(0).toFixed(1) + ' ' + H + ' Z'; // surface sous la ligne
+  const zn = zone ? '<rect class="zn" x="0" width="' + W + '" y="' + Y(Math.min(hi, zone[1])).toFixed(1) + '" height="' + (Y(Math.max(lo, zone[0])) - Y(Math.min(hi, zone[1]))).toFixed(1) + '"/>' : ''; // bande verte (zone idéale)
+  const dots = pts.map((p, i) => '<path class="pt" d="M' + X(i).toFixed(1) + ' ' + Y(p.v).toFixed(1) + 'l0 0"/>').join(''); // un point par analyse
+  const last = pts[n - 1].v, first = pts[0].v;             // dernière et première valeur
+  return '<figure><figcaption><span>' + title + '</span><b>' + fmt(last) + '</b></figcaption><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="img" aria-label="' + esc(title + ' : ' + fmt(first) + ' → ' + fmt(last)) + '">' + zn + '<path class="ar" d="' + area + '"/><path class="ln" d="' + line + '"/>' + dots + '</svg></figure>'; // la figure complète
+}
+function renderTrend() {                                   // les courbes de la page Progrès
+  const h = loadHist().slice().reverse();                  // de la plus ancienne à la plus récente
+  const ok = (k) => h.filter(x => x.m && Number.isFinite(k === 'score' ? x.score : x.m[k])).map(x => ({ v: k === 'score' ? x.score : x.m[k], d: x.d })); // valeurs connues
+  const figs = [];                                         // les courbes
+  const sc = ok('score'), cad = ok('cadence'), shin = ok('shin'); // score, cadence, tibia
+  if (sc.length >= 2) figs.push(sparkFigure(T('Score'), sc, v => fr(v), [80, 100], 0, 100)); // score sur 100
+  if (cad.length >= 2) figs.push(sparkFigure(T('Cadence') + ' (' + T('pas/min') + ')', cad, v => fr(v), [170, 190], Math.min(140, ...cad.map(p => p.v)) - 2, Math.max(200, ...cad.map(p => p.v)) + 2)); // cadence
+  if (shin.length >= 2) figs.push(sparkFigure(T('Pied devant le corps') + ' (°)', shin, v => fr(v) + '°', [-10, 7], Math.min(-15, ...shin.map(p => p.v)) - 1, Math.max(30, ...shin.map(p => p.v)) + 1)); // tibia
+  $('trendBox').hidden = !figs.length;                     // carte visible seulement avec au moins 2 analyses
+  $('trend').className = 'trend'; $('trend').innerHTML = figs.join(''); // on affiche
+}
+const renderHistV2 = renderHist;                           // l'ancienne fonction d'affichage de l'historique…
+renderHist = function () { renderHistV2(); renderTrend(); }; // …complétée : la liste puis les courbes
+
+// ---------- 5. Sauvegarde et restauration de l'historique ----------
+$('exportBtn').addEventListener('click', async () => {     // « Sauvegarder mes analyses »
+  const h = loadHist();                                    // les analyses
+  if (!h.length) { toast(T('Aucune analyse à sauvegarder pour l\'instant.')); return; } // rien
+  const blob = new Blob([JSON.stringify({ app: 'foulee', v: 3, date: new Date().toISOString(), hist: h })], { type: 'application/json' }); // le fichier de sauvegarde
+  try { await shareBlob(blob, 'foulee-sauvegarde-' + new Date().toISOString().slice(0, 10) + '.json', T('Sauvegarde Foulée')); toast(T('Sauvegarde prête.')); } catch (e) { toast(T('Partage annulé.')); } // partage (Drive, e-mail…)
+});
+$('importFile').addEventListener('change', async e => {    // « Restaurer une sauvegarde »
+  const f = e.target.files && e.target.files[0]; e.target.value = ''; // le fichier choisi
+  if (!f) return;                                          // rien
+  try {
+    const data = JSON.parse(await f.text());               // on lit la sauvegarde
+    const incoming = (data && Array.isArray(data.hist) ? data.hist : []).filter(x => x && typeof x.d === 'string' && x.m && typeof x.m === 'object'); // seulement des analyses valides
+    if (!incoming.length) throw new Error('empty');        // rien d'utilisable
+    const cur = loadHist(), seen = new Set(cur.map(x => x.d)); // analyses déjà présentes
+    const added = incoming.filter(x => !seen.has(x.d));    // les nouvelles seulement (pas de doublons)
+    const all = cur.concat(added).sort((a, b) => (b.d > a.d ? 1 : -1)); // tout, de la plus récente à la plus ancienne
+    saveHist(all); renderHist();                           // on range et on affiche
+    toast(added.length + T(' analyse(s) restaurée(s).'));  // combien
+  } catch (err) { toast(T('Ce fichier n\'est pas une sauvegarde Foulée.')); } // mauvais fichier
+});
+renderTrend();                                             // les courbes au démarrage
 
 </script>
 
