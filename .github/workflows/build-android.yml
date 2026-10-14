@@ -1,0 +1,60 @@
+# Fabrique l'app Android de Foulée dans le « nuage » de GitHub (gratuit), sans rien installer sur votre ordinateur.
+# Résultat : un fichier .aab (pour le Play Store) et un fichier .apk (pour essayer sur votre téléphone).
+name: Construire l'app Android
+
+on:
+  workflow_dispatch:        # bouton « Run workflow » dans l'onglet Actions
+  push:
+    branches: [main]        # et à chaque dépôt de fichiers sur la branche main
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEY: ${{ secrets.POURELLE_KEYSTORE_BASE64 != '' }}   # la clé de signature est-elle rangée dans le coffre ?
+    steps:
+      - name: Récupérer les fichiers du dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Installer Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Installer Capacitor
+        run: npm ci
+
+      - name: Copier l'app dans le projet Android
+        run: npx cap sync android
+
+      - name: Préparer la clé de signature
+        if: env.HAS_KEY == 'true'
+        env:
+          KS: ${{ secrets.POURELLE_KEYSTORE_BASE64 }}
+        run: |
+          echo "$KS" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          echo "POURELLE_KEYSTORE=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+
+      - name: Construire l'app (.aab et .apk)
+        working-directory: android
+        env:
+          POURELLE_KEYSTORE_PASSWORD: ${{ secrets.POURELLE_KEYSTORE_PASSWORD }}
+          POURELLE_KEY_ALIAS: pourelle
+        run: |
+          chmod +x gradlew
+          ./gradlew bundleRelease assembleRelease --no-daemon --stacktrace
+
+      - name: Mettre les fichiers à télécharger
+        uses: actions/upload-artifact@v4
+        with:
+          name: foulee-android
+          path: |
+            android/app/build/outputs/bundle/release/*.aab
+            android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
