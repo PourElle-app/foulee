@@ -1,0 +1,17 @@
+{
+  "name": "foulee",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Foulée : analyse de foulée gratuite par IA sur le téléphone (application Android)",
+  "dependencies": {
+    "@capacitor-community/keep-awake": "8.0.1",
+    "@capacitor-community/text-to-speech": "8.0.2",
+    "@capacitor/android": "8.5.2",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/filesystem": "8.1.3",
+    "@capacitor/share": "8.0.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.2"
+  }
+}

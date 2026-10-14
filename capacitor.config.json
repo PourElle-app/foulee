@@ -1,0 +1,6 @@
+{
+  "appId": "io.github.pourelle_app.foulee",
+  "appName": "Foulée",
+  "webDir": "www",
+  "android": { "allowMixedContent": false, "captureInput": true, "webContentsDebuggingEnabled": false }
+}
